@@ -1,0 +1,60 @@
+name: Build and publish to NuGet
+
+on:
+  release:
+    types: [created]
+  workflow_dispatch:
+    inputs:
+      package_version:
+        description: 'Package version to use'
+        required: false
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --no-restore --configuration Release
+
+    - name: Pack Branded
+      run: |
+        version=${{ github.event_name == 'release' && github.event.release.tag_name || github.event.inputs.package_version }}
+        echo "Using version $version for Branded"
+        dotnet pack ./Branded/Branded.csproj --no-build --configuration Release /p:PackageVersion=$version -o ./output
+
+    - name: Pack Branded.SourceGenerator
+      run: |
+        version=${{ github.event_name == 'release' && github.event.release.tag_name || github.event.inputs.package_version }}
+        echo "Using version $version for Branded.SourceGenerator"
+        dotnet pack ./Branded.SourceGenerator/Branded.SourceGenerator.csproj --no-build --configuration Release /p:PackageVersion=$version -o ./output
+
+    - name: Publish the packages to NuGet
+      env:
+        NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+      run: |
+        for package in ./output/*.nupkg; do
+          dotnet nuget push "$package" -k $NUGET_API_KEY -s https://api.nuget.org/v3/index.json
+        done
+
+    - name: Upload NuGet packages to GitHub Release
+      if: github.event_name == 'release'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        tag_name=${{ github.event.release.tag_name }}
+        release_id=$(gh api "repos/${{ github.repository }}/releases/tags/$tag_name" --jq '.id')
+        for package in ./output/*.nupkg; do
+          gh release upload $release_id "$package"
+        done
