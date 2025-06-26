@@ -47,14 +47,3 @@ jobs:
         for package in ./output/*.nupkg; do
           dotnet nuget push "$package" -k $NUGET_API_KEY -s https://api.nuget.org/v3/index.json
         done
-
-    - name: Upload NuGet packages to GitHub Release
-      if: github.event_name == 'release'
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        tag_name=${{ github.event.release.tag_name }}
-        release_id=$(gh api "repos/${{ github.repository }}/releases/tags/$tag_name" --jq '.id')
-        for package in ./output/*.nupkg; do
-          gh release upload $release_id "$package"
-        done
