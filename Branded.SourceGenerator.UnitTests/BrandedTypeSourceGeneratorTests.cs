@@ -257,6 +257,50 @@ public class BrandedTypeSourceGeneratorTests
     }
 
     [Fact]
+    public async Task Missing_partial_is_ignored_when_BrandedTypeNamePattern_excluded_type()
+    {
+        await new Verify.Test
+        {
+            TestState =
+            {
+                Sources =
+                {
+                    """
+                    [assembly:Branded.SourceGeneratorConventions(BrandedTypeNamePattern = @"Identifier$")]
+
+                    namespace MyNamespace;
+                    public readonly record struct MyCode(long Id);
+                    """
+                },
+                ReferenceAssemblies = ReferencesWithBranded,
+            },
+            CompilerDiagnostics = CompilerDiagnostics.None
+        }.RunAsync();
+    }
+
+    [Fact]
+    public async Task Missing_constructor_is_ignored_when_BrandedTypeNamePattern_excluded_type()
+    {
+        await new Verify.Test
+        {
+            TestState =
+            {
+                Sources =
+                {
+                    """
+                    [assembly:Branded.SourceGeneratorConventions(BrandedTypeNamePattern = @"Identifier$")]
+
+                    namespace MyNamespace;
+                    public readonly partial record struct MyCode();
+                    """
+                },
+                ReferenceAssemblies = ReferencesWithBranded,
+            },
+            CompilerDiagnostics = CompilerDiagnostics.None
+        }.RunAsync();
+    }
+
+    [Fact]
     public async Task Unknown_configuration_parameters_generate_warnings()
     {
         await new Verify.Test

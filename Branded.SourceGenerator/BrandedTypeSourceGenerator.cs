@@ -74,40 +74,41 @@ namespace Branded.SourceGenerator
                 .Where(a => a is not null)
                 .Collect();
 
-            var identifierTypeCandidates = context.SyntaxProvider
+            var identifierTypes = context.SyntaxProvider
                 .CreateSyntaxProvider(
                     IsBrandedTypeCandidate,
                     ParseBrandedTypeCandidate
-                );
-
-            ReportDiagnostics(context, identifierTypeCandidates);
-
-            var identifierTypes = identifierTypeCandidates
+                )
                 .Where(s => s.Value is not null)
                 .Combine(configuration.Collect())
                 .Where(sc => sc.Right.Length == 0 || sc.Right[0].Value is not null) // Only when the configuration is valid or omitted
-                .Select((sc, _) => new
-                {
-                    Symbol = sc.Left.Value!,
-                    Configuration = sc.Right.FirstOrDefault()?.Value ?? DefaultConfiguration,
-                })
-                .Where(sc => sc.Configuration.BrandedTypeNamePattern is null || sc.Configuration.BrandedTypeNamePattern.IsMatch(sc.Symbol.FullName))
-                .Combine(currentCustomAttributes)
-                .Combine(brandedAssemblyReferenced);
+                .Select((sc, _) => new Result<(BrandedTypeCandidate brandedType, SourceGeneratorConfiguration configuration)>(
+                    (sc.Left.Value!, sc.Right.FirstOrDefault()?.Value ?? DefaultConfiguration),
+                    sc.Left.Diagnostics
+                ))
+                .Where(sc => sc.Value.configuration.BrandedTypeNamePattern is null || sc.Value.configuration.BrandedTypeNamePattern.IsMatch(sc.Value.brandedType.FullName));
 
-            context.RegisterSourceOutput(identifierTypes, (ctx, sc) => GenerateBrandedType(
-                ctx,
-                sc.Left.Left.Symbol,
-                sc.Left.Left.Configuration,
-                sc.Left.Right,
-                sc.Right
-            ));
+            ReportDiagnostics(context, identifierTypes);
+
+            context.RegisterSourceOutput(
+                identifierTypes
+                    .Where(sc => sc.Diagnostics is null)
+                    .Combine(currentCustomAttributes)
+                    .Combine(brandedAssemblyReferenced),
+                (ctx, sc) => GenerateBrandedType(
+                    ctx,
+                    sc.Left.Left.Value.brandedType,
+                    sc.Left.Left.Value.configuration,
+                    sc.Left.Right,
+                    sc.Right
+                )
+            );
         }
 
         private static void ReportDiagnostics<T>(
             IncrementalGeneratorInitializationContext context,
             IncrementalValuesProvider<Result<T>> results
-        ) where T : class
+        )
         {
             context.RegisterSourceOutput(
                 results
@@ -443,10 +444,21 @@ namespace Branded.SourceGenerator
             var recordDeclarationSyntax = (RecordDeclarationSyntax)context.Node;
             if (!recordDeclarationSyntax.Modifiers.Any(SyntaxKind.PartialKeyword))
             {
-                return Diagnostic.Create(
-                    GeneratorDiagnosticDescriptors.MissingPartialModifier,
-                    location,
-                    symbol.Name
+                return new Result<BrandedTypeCandidate>(
+                    new BrandedTypeCandidate(
+                        namedTypeSymbol.Name,
+                        namedTypeSymbol.ContainingNamespace.ToDisplayString(),
+                        namedTypeSymbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat),
+                        location,
+                        "?",
+                        "?",
+                        null
+                    ),
+                    Diagnostic.Create(
+                        GeneratorDiagnosticDescriptors.MissingPartialModifier,
+                        location,
+                        symbol.Name
+                    )
                 );
             }
 
@@ -456,10 +468,21 @@ namespace Branded.SourceGenerator
 
             if (ctor is null)
             {
-                return Diagnostic.Create(
-                    GeneratorDiagnosticDescriptors.MissingConstructor,
-                    location,
-                    symbol.Name
+                return new Result<BrandedTypeCandidate>(
+                    new BrandedTypeCandidate(
+                        namedTypeSymbol.Name,
+                        namedTypeSymbol.ContainingNamespace.ToDisplayString(),
+                        namedTypeSymbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat),
+                        location,
+                        "?",
+                        "?",
+                        null
+                    ),
+                    Diagnostic.Create(
+                        GeneratorDiagnosticDescriptors.MissingConstructor,
+                        location,
+                        symbol.Name
+                    )
                 );
             }
 
@@ -509,7 +532,6 @@ namespace Branded.SourceGenerator
         );
 
         private sealed record Result<T>(T? Value, SmallList<Diagnostic>? Diagnostics = null)
-            where T : class
         {
             public Result(SmallList<Diagnostic> Diagnostics) : this(default, Diagnostics) { }
 

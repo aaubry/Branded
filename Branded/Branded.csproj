@@ -8,6 +8,8 @@
         <PackageReadmeFile>readme.md</PackageReadmeFile>
         <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
         <PackageIcon>icon.png</PackageIcon>
+        <RepositoryUrl>https://github.com/aaubry/Branded</RepositoryUrl>
+        <PackageOutputPath>../out</PackageOutputPath>
     </PropertyGroup>
 
     <ItemGroup>

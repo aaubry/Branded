@@ -69,6 +69,8 @@ namespace Branded.SourceGenerator
         public override bool Equals(object obj) => obj is SmallList<T> other && Equals(other);
 
         public override int GetHashCode() => this.Aggregate(0, (h, i) => HashCode.Combine(h, i is not null ? i.GetHashCode() : 0));
+
+        public static implicit operator SmallList<T>(T singleElement) => new(singleElement);
     }
 
     internal static class SmallList
