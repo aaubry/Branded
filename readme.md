@@ -308,6 +308,80 @@ The WidgetIdentifier from the previous example will have the following attribute
 [JsonConverter(typeof(Int32IdentifierConverter<WidgetIdentifier, WidgetIdentifier.Converter>))]
 ```
 
+## Dispatch mechanism
+
+Sometimes it is necessary to register some handler for the branded types with a mechanism other than
+a custom attribute. This particularly simplifies the registration process for third-party libraries, such as Dapper. Dapper provides a static method to register a type handler. If we
+want to register a handler for our types, we have to call that method explicitly.
+
+In such cases, it is likely that we will define a custom registration method that needs access to types
+related to each branded type. These can be passed as generic arguments, but usually one needs to
+pass three types, the branded type, its inner type and its converter type, which can become cumbersome
+and error prone.
+
+To avoid this, the branded types define a `Dispatch` method that takes an `IBrandedTypeDispatcher` implementation. That interface defines a single method that receives the three types as generic arguments.
+In this way performing registrations can avoid passing the types explicitly.
+
+Here's an example of a Dapper type handler:
+
+```csharp
+public sealed class BrandedTypeHandler<TBranded, TInner, TConverter> : SqlMapper.ITypeHandler
+    where TConverter : IBrandedValueConverter<TBranded, TInner>, new()
+{
+    private static readonly TConverter Converter = new();
+
+    public object Parse(Type destinationType, object value) =>
+        Converter.Wrap((TInner)value)!;
+
+    public void SetValue(IDbDataParameter parameter, object value) =>
+        parameter.Value = Converter.Unwrap((TBranded)value);
+}
+```
+
+Assuming that we have the following branded type:
+```csharp
+public readonly partial record struct WidgetIdentifier(int Id);
+```
+
+To register the handler for our branded type, we would need the following code:
+```csharp
+SqlMapper.AddTypeHandler(
+    typeof(WidgetIdentifier),
+    new BrandedTypeHandler<WidgetIdentifier, int, WidgetIdentifier.Converter>()
+);
+```
+
+This works but if we have to do it for many types, it is error prone to have to repeat the types that
+are already present in the branded type. Instead, we can add an implementation of `IBrandedTypeDispatcher`
+that performs that work:
+
+```csharp
+public sealed class BrandedTypeRegistry : IBrandedTypeDispatcher
+{
+    private BrandedTypeRegistry() { }
+
+    public static readonly BrandedTypeRegistry Instance = new();
+
+    public void Dispatch<TBranded, TInner, TConverter>()
+        where TConverter : IBrandedValueConverter<TBranded, TInner>, new()
+    {
+        SqlMapper.AddTypeHandler(
+            typeof(TBranded),
+            new BrandedTypeHandler<TBranded, TInner, TConverter>()
+        );
+    }
+}
+```
+
+Then we use the `Dispatch` method to call it with the correct arguments:
+```csharp
+WidgetIdentifier.Dispatch(BrandedTypeRegistry.Instance);
+```
+
+By using the `Dispatch` method, we reduce the complexity and potential for error when setting up multiple
+branded types for use with a library like Dapper, and also enhance code maintainability by minimizing
+redundant type specifications.
+
 ## Errors and information messages
 
 This section describes the error and information codes that are produced by the source generator.

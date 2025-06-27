@@ -674,16 +674,22 @@ namespace Branded.SourceGenerator
                     .Append(targetType.PropertyName)
                     .Append(";\n");
 
-                source.Append("    }\n");
-                source.Append('\n');
+                source.Append("    }\n\n");
+
+                source
+                    .Append("    public static void Dispatch(global::Branded.IBrandedTypeDispatcher dispatcher) => dispatcher.Dispatch<")
+                    .Append(targetType.FullName)
+                    .Append(", ")
+                    .Append(targetType.InnerTypeName)
+                    .Append(", ")
+                    .Append(targetType.FullName)
+                    .Append(".Converter>();\n\n");
             }
 
             source
                 .Append("    public override string ToString() => ")
                 .Append(targetType.PropertyName)
-                .Append(".ToString();\n");
-
-            source.Append('\n');
+                .Append(".ToString();\n\n");
 
             source
                 .Append("    public static implicit operator ")

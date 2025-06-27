@@ -63,6 +63,8 @@ public class BrandedTypeSourceGeneratorTests
                                 public long Unwrap(global::MyPrefix.MyNamespace.MyIdentifier value) => value.Id;
                             }
 
+                            public static void Dispatch(global::Branded.IBrandedTypeDispatcher dispatcher) => dispatcher.Dispatch<global::MyPrefix.MyNamespace.MyIdentifier, long, global::MyPrefix.MyNamespace.MyIdentifier.Converter>();
+
                             public override string ToString() => Id.ToString();
 
                             public static implicit operator long(global::MyPrefix.MyNamespace.MyIdentifier value) => value.Id;
@@ -229,6 +231,8 @@ public class BrandedTypeSourceGeneratorTests
                                 public global::MyNamespace.MyIdentifier Wrap(long value) => new global::MyNamespace.MyIdentifier(value);
                                 public long Unwrap(global::MyNamespace.MyIdentifier value) => value.Id;
                             }
+
+                            public static void Dispatch(global::Branded.IBrandedTypeDispatcher dispatcher) => dispatcher.Dispatch<global::MyNamespace.MyIdentifier, long, global::MyNamespace.MyIdentifier.Converter>();
                         
                             public override string ToString() => Id.ToString();
 
@@ -334,6 +338,8 @@ public class BrandedTypeSourceGeneratorTests
                                 public global::MyNamespace.MyIdentifier Wrap(long value) => new global::MyNamespace.MyIdentifier(value);
                                 public long Unwrap(global::MyNamespace.MyIdentifier value) => value.Id;
                             }
+                        
+                            public static void Dispatch(global::Branded.IBrandedTypeDispatcher dispatcher) => dispatcher.Dispatch<global::MyNamespace.MyIdentifier, long, global::MyNamespace.MyIdentifier.Converter>();
                         
                             public override string ToString() => Id.ToString();
 
@@ -452,6 +458,8 @@ public class BrandedTypeSourceGeneratorTests
                                 public long Unwrap(global::MyNamespace.MyIdentifier value) => value.Id;
                             }
 
+                            public static void Dispatch(global::Branded.IBrandedTypeDispatcher dispatcher) => dispatcher.Dispatch<global::MyNamespace.MyIdentifier, long, global::MyNamespace.MyIdentifier.Converter>();
+                        
                             public override string ToString() => Id.ToString();
 
                             public static implicit operator long(global::MyNamespace.MyIdentifier value) => value.Id;
@@ -537,6 +545,8 @@ public class BrandedTypeSourceGeneratorTests
                                 public long Unwrap(global::MyNamespace.MyIdentifier value) => value.Id;
                             }
 
+                            public static void Dispatch(global::Branded.IBrandedTypeDispatcher dispatcher) => dispatcher.Dispatch<global::MyNamespace.MyIdentifier, long, global::MyNamespace.MyIdentifier.Converter>();
+                        
                             public override string ToString() => Id.ToString();
 
                             public static implicit operator long(global::MyNamespace.MyIdentifier value) => value.Id;
@@ -620,6 +630,8 @@ public class BrandedTypeSourceGeneratorTests
                                 public long Unwrap(global::MyNamespace.MyIdentifier value) => value.Id;
                             }
 
+                            public static void Dispatch(global::Branded.IBrandedTypeDispatcher dispatcher) => dispatcher.Dispatch<global::MyNamespace.MyIdentifier, long, global::MyNamespace.MyIdentifier.Converter>();
+                        
                             public override string ToString() => Id.ToString();
 
                             public static implicit operator long(global::MyNamespace.MyIdentifier value) => value.Id;
@@ -708,6 +720,8 @@ public class BrandedTypeSourceGeneratorTests
                                 public long Unwrap(global::MyNamespace.MyIdentifier value) => value.Id;
                             }
 
+                            public static void Dispatch(global::Branded.IBrandedTypeDispatcher dispatcher) => dispatcher.Dispatch<global::MyNamespace.MyIdentifier, long, global::MyNamespace.MyIdentifier.Converter>();
+                        
                             public override string ToString() => Id.ToString();
 
                             public static implicit operator long(global::MyNamespace.MyIdentifier value) => value.Id;
@@ -781,6 +795,8 @@ public class BrandedTypeSourceGeneratorTests
                                 public int Unwrap(global::MyNamespace.MyIdentifier value) => value.Id;
                             }
 
+                            public static void Dispatch(global::Branded.IBrandedTypeDispatcher dispatcher) => dispatcher.Dispatch<global::MyNamespace.MyIdentifier, int, global::MyNamespace.MyIdentifier.Converter>();
+                        
                             public override string ToString() => Id.ToString();
 
                             public static implicit operator int(global::MyNamespace.MyIdentifier value) => value.Id;
@@ -853,6 +869,8 @@ public class BrandedTypeSourceGeneratorTests
                                 public long Unwrap(global::MyNamespace.MyIdentifier value) => value.Id;
                             }
 
+                            public static void Dispatch(global::Branded.IBrandedTypeDispatcher dispatcher) => dispatcher.Dispatch<global::MyNamespace.MyIdentifier, long, global::MyNamespace.MyIdentifier.Converter>();
+                        
                             public override string ToString() => Id.ToString();
 
                             public static implicit operator long(global::MyNamespace.MyIdentifier value) => value.Id;
@@ -925,6 +943,8 @@ public class BrandedTypeSourceGeneratorTests
                                 public long Unwrap(global::MyNamespace.MyIdentifier value) => value.Id;
                             }
 
+                            public static void Dispatch(global::Branded.IBrandedTypeDispatcher dispatcher) => dispatcher.Dispatch<global::MyNamespace.MyIdentifier, long, global::MyNamespace.MyIdentifier.Converter>();
+                        
                             public override string ToString() => Id.ToString();
 
                             public static implicit operator long(global::MyNamespace.MyIdentifier value) => value.Id;
@@ -1012,6 +1032,8 @@ public class BrandedTypeSourceGeneratorTests
                                 public long Unwrap(global::MyNamespace.MyIdentifier value) => value.Id;
                             }
 
+                            public static void Dispatch(global::Branded.IBrandedTypeDispatcher dispatcher) => dispatcher.Dispatch<global::MyNamespace.MyIdentifier, long, global::MyNamespace.MyIdentifier.Converter>();
+                        
                             public override string ToString() => Id.ToString();
 
                             public static implicit operator long(global::MyNamespace.MyIdentifier value) => value.Id;
