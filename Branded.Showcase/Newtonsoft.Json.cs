@@ -14,7 +14,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace Branded.Showcase;
+using Newtonsoft.Json;
+
+namespace Branded.Showcase.Newtonsoft.Json;
 
 public record Widget(
     WidgetIdentifier Id,
@@ -27,3 +29,15 @@ public readonly partial record struct UserIdentifier(string Username);
 // Not a branded type according to the defined SourceGeneratorConventions
 public readonly partial record struct WidgetCode(string Code);
 
+public static class Program
+{
+    public static void Main()
+    {
+
+        var json = JsonConvert.SerializeObject(new Widget(new(42), new("alex")));
+        Console.WriteLine($"json: {json}");
+
+        var parsed = JsonConvert.DeserializeObject<Widget>(json);
+        Console.WriteLine($"parsed: {parsed}");
+    }
+}

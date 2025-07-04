@@ -18,6 +18,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Branded.Showcase", "Branded.Showcase\Branded.Showcase.csproj", "{60B41580-A128-49C5-A5CD-B0A1651A1F98}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Branded.Integrations", "Branded.Integrations\Branded.Integrations.csproj", "{65B5DA1E-9492-4C7F-966A-50D2FA7F6DB2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,10 @@ Global
 		{60B41580-A128-49C5-A5CD-B0A1651A1F98}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{60B41580-A128-49C5-A5CD-B0A1651A1F98}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{60B41580-A128-49C5-A5CD-B0A1651A1F98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65B5DA1E-9492-4C7F-966A-50D2FA7F6DB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65B5DA1E-9492-4C7F-966A-50D2FA7F6DB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65B5DA1E-9492-4C7F-966A-50D2FA7F6DB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65B5DA1E-9492-4C7F-966A-50D2FA7F6DB2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

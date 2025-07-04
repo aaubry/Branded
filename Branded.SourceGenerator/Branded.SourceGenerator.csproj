@@ -12,13 +12,15 @@
         <PackageIcon>icon.png</PackageIcon>
         <RepositoryUrl>https://github.com/aaubry/Branded</RepositoryUrl>
         <PackageOutputPath>../out</PackageOutputPath>
-    </PropertyGroup>
-
-    <PropertyGroup>
         <IsRoslynComponent>true</IsRoslynComponent>
         <IncludeBuildOutput>false</IncludeBuildOutput>
         <DevelopmentDependency>true</DevelopmentDependency>
-        <Title>Branded.SourceGenerator</Title>
+        <Description>
+            Branded.SourceGenerator is a C# source generator that facilitates the creation of branded types,
+            enhancing type safety by wrapping primitive types with more specific, custom types.
+            This helps prevent bugs associated with the accidental misuse of identifiers,
+            as it allows the compiler to enforce stronger type checks.
+        </Description>
     </PropertyGroup>
 
     <ItemGroup>

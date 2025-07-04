@@ -15,23 +15,29 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 using System.Text.Json;
-using System.Text.Json.Serialization;
 
-namespace Branded.SourceGenerator.UnitTests;
+namespace Branded.Showcase.System.Text.Json;
 
-public class StringIdentifierConverter<TBranded, TFactory> : JsonConverter<TBranded>
-    where TFactory : IBrandedValueConverter<TBranded, string>, new()
+public record Widget(
+    WidgetIdentifier Id,
+    UserIdentifier Owner
+);
+
+public readonly partial record struct WidgetIdentifier(int Id);
+public readonly partial record struct UserIdentifier(string Username);
+
+// Not a branded type according to the defined SourceGeneratorConventions
+public readonly partial record struct WidgetCode(string Code);
+
+public static class Program
 {
-    private readonly TFactory factory = new();
-
-    public override TBranded? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    public static void Main()
     {
-        var value = reader.GetString();
-        return value != null ? factory.Wrap(value) : default;
-    }
 
-    public override void Write(Utf8JsonWriter writer, TBranded value, JsonSerializerOptions options)
-    {
-        writer.WriteStringValue(factory.Unwrap(value));
+        var json = JsonSerializer.Serialize(new Widget(new(42), new("alex")));
+        Console.WriteLine($"json: {json}");
+
+        var parsed = JsonSerializer.Deserialize<Widget>(json);
+        Console.WriteLine($"parsed: {parsed}");
     }
 }

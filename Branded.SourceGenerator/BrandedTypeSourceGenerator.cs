@@ -171,13 +171,13 @@ namespace Branded.SourceGenerator
             SmallList<Result<CustomAttributeSettings>>? result = null;
             foreach (var attribute in context.Attributes)
             {
-                SmallList.Push(ref result, ParseCustomAttribute(context, attribute, cancellationToken));
+                SmallList.Push(ref result, ParseCustomAttribute(attribute));
             }
 
             return result;
         }
 
-        private static Result<CustomAttributeSettings> ParseCustomAttribute(GeneratorAttributeSyntaxContext context, AttributeData attribute, CancellationToken cancellationToken)
+        private static Result<CustomAttributeSettings> ParseCustomAttribute(AttributeData attribute)
         {
             try
             {

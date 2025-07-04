@@ -1,0 +1,57 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <ImplicitUsings>disable</ImplicitUsings>
+        <Nullable>disable</Nullable>
+        <LangVersion>8.0</LangVersion>
+        <PackageReadmeFile>readme.md</PackageReadmeFile>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageIcon>icon.png</PackageIcon>
+        <RepositoryUrl>https://github.com/aaubry/Branded</RepositoryUrl>
+        <PackageOutputPath>../out</PackageOutputPath>
+        <IncludeBuildOutput>false</IncludeBuildOutput>
+        <DevelopmentDependency>true</DevelopmentDependency>
+        <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <Description>
+            Branded.Integrations is a C# source-only package that complements the Branded.SourceGenerator
+            by providing seamless integration with popular libraries like System.Text.Json, Newtonsoft.Json, and Dapper.
+            It includes necessary converters and helpers, allowing branded types to be used effortlessly for JSON serialization and database operations.
+            The source-only distribution ensures that the integration is plug-and-play,
+            automatically applying necessary assembly attributes into the project using the respective libraries.
+        </Description>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="readme.md" Pack="true" PackagePath="\" />
+        <None Include="license.md" Pack="true" PackagePath="\" />
+        <None Include="..\icon.png" Pack="true" PackagePath="\" />
+        <Compile Update="**/*.cs" Pack="true" PackagePath="contentFiles/cs/netstandard2.0/Branded.Integrations/" />
+        <None Include="Branded.Integrations.targets" Pack="true" PackagePath="buildTransitive" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Dapper" Version="2.0.4" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+      <PackageReference Include="System.Text.Json" Version="9.0.6" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Branded\Branded.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+      <None Update="System.Text.Json\BrandedJsonConverter.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>BrandedJsonConverter.gen.cs</LastGenOutput>
+      </None>
+      <Compile Update="System.Text.Json\BrandedJsonConverter.gen.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>BrandedJsonConverter.tt</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+</Project>

@@ -1,0 +1,36 @@
+﻿<Project>
+    <ItemGroup>
+        <Compile Update="@(Compile)">
+            <Visible Condition="'%(NuGetItemType)' == 'Compile' and '%(NuGetPackageId)' == 'Branded.Integrations'">false</Visible>
+        </Compile>
+    </ItemGroup>
+
+    <Target Name="RemoveBrandedIntegrations" BeforeTargets="CoreCompile" AfterTargets="ResolveAssemblyReferences">
+        <ItemGroup>
+            <BrandedIntegrations Include="@(Compile)"
+                                 Condition="'%(Compile.NuGetItemType)' == 'Compile' and
+                                '%(Compile.NuGetPackageId)' == 'Branded.Integrations'">
+                
+                <Required>$([System.IO.Path]::GetFileName($([System.IO.Path]::GetDirectoryName(%(Compile.Identity)))))</Required>
+            </BrandedIntegrations>
+        </ItemGroup>
+
+        <!-- Combine BrandedIntegrations with ReferencePath. This includes both NuGet packages and assemblies inherited from the SDK -->
+        <ItemGroup>
+            <CombinedBrandedIntegrations Include="@(BrandedIntegrations)">
+                <Provided>$([System.String]::new('%(ReferencePath.FusionName)').Split(',')[0].Trim())</Provided>
+            </CombinedBrandedIntegrations>
+        </ItemGroup>
+
+        <!-- Remove all integrations -->
+        <ItemGroup>
+            <Compile Remove="@(BrandedIntegrations)" />
+        </ItemGroup>
+
+        <!-- Add them back if the required package is present -->
+        <ItemGroup>
+            <Compile Include="@(CombinedBrandedIntegrations)"
+                     Condition="%(CombinedBrandedIntegrations.Required) == %(CombinedBrandedIntegrations.Provided)"/>
+        </ItemGroup>
+    </Target>
+</Project>

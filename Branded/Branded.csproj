@@ -10,6 +10,10 @@
         <PackageIcon>icon.png</PackageIcon>
         <RepositoryUrl>https://github.com/aaubry/Branded</RepositoryUrl>
         <PackageOutputPath>../out</PackageOutputPath>
+        <Description>
+            Branded is an optional package that provides additional configuration options for the Branded.SourceGenerator,
+            allowing for further customization of branded types through conventions, custom attributes, and enhanced tooling support.
+        </Description>
     </PropertyGroup>
 
     <ItemGroup>

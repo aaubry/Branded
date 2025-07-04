@@ -14,50 +14,24 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-using Branded.Showcase;
-using Branded.SourceGenerator.UnitTests;
-using System.Text.Json;
-using System.Text.Json.Serialization;
+namespace Branded.Showcase;
 
-[assembly: Branded.SourceGeneratorConventions(BrandedTypeNamePattern = @"Identifier$")]
-[assembly: Branded.SourceGeneratorCustomAttribute(
-    typeof(JsonConverter),
-    ConstructorArguments = [
-        new[]
-        {
-            typeof(Int32IdentifierConverter<,>),
-            typeof(Branded.BrandedTypePlaceholder),
-            typeof(Branded.BrandedConverterTypePlaceholder)
-        },
-    ],
-    OnlyForInnerTypes = [
-        typeof(int)
-    ]
-)]
-[assembly: Branded.SourceGeneratorCustomAttribute(
-    typeof(JsonConverter),
-    ConstructorArguments = [
-        new[]
-        {
-            typeof(StringIdentifierConverter<,>),
-            typeof(Branded.BrandedTypePlaceholder),
-            typeof(Branded.BrandedConverterTypePlaceholder)
-        }
-    ],
-    OnlyForInnerTypes = [
-        typeof(string)
-    ]
-)]
-[assembly: Branded.SourceGeneratorCustomAttribute(
-    typeof(JsonNumberHandlingAttribute),
-    ConstructorArguments = [
-        JsonNumberHandling.Strict
-    ]
-)]
+public static class Program
+{
+    public static void Main()
+    {
+        Console.WriteLine("Newtonsoft.Json");
+        Console.WriteLine("===============");
+        Branded.Showcase.Newtonsoft.Json.Program.Main();
 
-var json = JsonSerializer.Serialize(new Widget(new(42), new("alex")));
+        Console.WriteLine();
+        Console.WriteLine("System.Text.Json");
+        Console.WriteLine("================");
+        Branded.Showcase.System.Text.Json.Program.Main();
 
-Console.WriteLine($"json: {json}");
-
-var parsed = JsonSerializer.Deserialize<Widget>(json);
-Console.WriteLine($"parsed: {parsed}");
+        Console.WriteLine();
+        Console.WriteLine("Dapper");
+        Console.WriteLine("======");
+        Branded.Showcase.Dapper.Program.Main();
+    }
+}

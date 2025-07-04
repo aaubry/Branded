@@ -40,6 +40,12 @@ jobs:
         echo "Using version $version for Branded.SourceGenerator"
         dotnet pack ./Branded.SourceGenerator/Branded.SourceGenerator.csproj --no-build --configuration Release /p:PackageVersion=$version -o ./output
 
+    - name: Pack Branded.Integrations
+      run: |
+        version=${{ github.event_name == 'release' && github.event.release.tag_name || github.event.inputs.package_version }}
+        echo "Using version $version for Branded.Integrations"
+        dotnet pack ./Branded.Integrations/Branded.Integrations.csproj --no-build --configuration Release /p:PackageVersion=$version -o ./output
+
     - name: Publish the packages to NuGet
       env:
         NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}

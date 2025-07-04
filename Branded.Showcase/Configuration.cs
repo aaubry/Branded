@@ -14,24 +14,4 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-using System.Text.Json;
-using System.Text.Json.Serialization;
-
-namespace Branded.SourceGenerator.UnitTests;
-
-public class Int32IdentifierConverter<TBranded, TFactory> : JsonConverter<TBranded>
-    where TFactory : IBrandedValueConverter<TBranded, int>, new()
-{
-    private readonly TFactory factory = new();
-
-    public override TBranded? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-    {
-        var value = reader.GetInt32();
-        return factory.Wrap(value);
-    }
-
-    public override void Write(Utf8JsonWriter writer, TBranded value, JsonSerializerOptions options)
-    {
-        writer.WriteNumberValue(factory.Unwrap(value));
-    }
-}
+[assembly: Branded.SourceGeneratorConventions(BrandedTypeNamePattern = @"Identifier$")]

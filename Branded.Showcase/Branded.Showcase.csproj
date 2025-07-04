@@ -5,15 +5,39 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <StartupObject>Branded.Showcase.Program</StartupObject>
     </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="..\Branded.Integrations\*\*.cs">
+            <NuGetItemType>Compile</NuGetItemType>
+            <NuGetPackageId>Branded.Integrations</NuGetPackageId>
+        </Compile>
+    </ItemGroup>
+
+    <Import Project="..\Branded.Integrations\Branded.Integrations.targets" />
+
+    <ItemGroup>
+        <PackageReference Include="Dapper" Version="2.1.66" />
+        <PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.2" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+        <PackageReference Include="YamlDotNet" Version="16.3.0" />
+    </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\Branded.SourceGenerator\Branded.SourceGenerator.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
         <ProjectReference Include="..\Branded\Branded.csproj" />
     </ItemGroup>
 
-    <Target Name="ReloadSourceGenerator" BeforeTargets="BeforeBuild" DependsOnTargets="$(BeforeBuildDependsOn)">
-        <Exec Command="dotnet build-server shutdown" />
+    <Target Name="PrintCompilation" BeforeTargets="CoreCompile" AfterTargets="RemoveBrandedIntegrations">
+        <Message Importance="high" Text="&#xA;" />
+        <Message Importance="high" Text="Compilation list:" />
+        <Message Importance="high" Text=" - %(Compile.Identity)" />
+        <Message Importance="high" Text="&#xA;" />
     </Target>
+
+    <!--<Target Name="ReloadSourceGenerator" BeforeTargets="BeforeBuild" DependsOnTargets="$(BeforeBuildDependsOn)">
+        <Exec Command="dotnet build-server shutdown" />
+    </Target>-->
 
 </Project>
