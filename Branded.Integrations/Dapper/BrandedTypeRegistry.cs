@@ -35,16 +35,14 @@ namespace Branded.Integrations.Dapper
             IsAnsi = isAnsi;
         }
 
-        public DapperStringType(int length, bool isAnsi) : this(isAnsi)
+        public DapperStringType(int length, bool isFixedLength = false, bool isAnsi = false) : this(isAnsi)
         {
             Length = length;
-        }
-
-        public DapperStringType(int length) : this(length, isAnsi: false)
-        {
+            IsFixedLength = isFixedLength;
         }
 
         public int? Length { get; }
+        public bool IsFixedLength { get; }
         public bool IsAnsi { get; }
     }
 
@@ -85,9 +83,13 @@ namespace Branded.Integrations.Dapper
                         if (dapperStringType.Length != null)
                         {
                             parameter.Size = dapperStringType.Length.Value;
-                            parameter.DbType = dapperStringType.IsAnsi
-                                ? global::System.Data.DbType.AnsiStringFixedLength
-                                : global::System.Data.DbType.StringFixedLength;
+                            parameter.DbType = dapperStringType.IsFixedLength
+                                ? dapperStringType.IsAnsi
+                                    ? global::System.Data.DbType.AnsiStringFixedLength
+                                    : global::System.Data.DbType.StringFixedLength
+                                : dapperStringType.IsAnsi
+                                    ? global::System.Data.DbType.AnsiString
+                                    : global::System.Data.DbType.String;
                         }
                         else
                         {
