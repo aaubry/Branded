@@ -26,6 +26,8 @@ public record Widget(
 );
 
 public readonly partial record struct WidgetIdentifier(int Id);
+
+[DapperStringType(20, true)]
 public readonly partial record struct UserIdentifier(string Username);
 
 public static class Program

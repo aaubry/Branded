@@ -20,8 +20,34 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#nullable enable
+
 namespace Branded.Integrations.Dapper
 {
+    /// <summary>
+    /// Configures how a string-branded type is mapped to the database.
+    /// </summary>
+    [global::System.AttributeUsage(global::System.AttributeTargets.Struct)]
+    internal sealed class DapperStringType : global::System.Attribute
+    {
+        public DapperStringType(bool isAnsi)
+        {
+            IsAnsi = isAnsi;
+        }
+
+        public DapperStringType(int length, bool isAnsi) : this(isAnsi)
+        {
+            Length = length;
+        }
+
+        public DapperStringType(int length) : this(length, isAnsi: false)
+        {
+        }
+
+        public int? Length { get; }
+        public bool IsAnsi { get; }
+    }
+
     internal sealed class BrandedTypeRegistry : global::Branded.IBrandedTypeDispatcher
     {
         private BrandedTypeRegistry() { }
@@ -33,8 +59,45 @@ namespace Branded.Integrations.Dapper
         {
             private static readonly TConverter Converter = new TConverter();
 
+            private readonly DapperStringType? dapperStringType;
+
+            public IdentifierTypeHandler()
+            {
+                if (typeof(TInner) == typeof(string))
+                {
+                    dapperStringType = (DapperStringType?)global::System.Attribute.GetCustomAttribute(typeof(TIdentifier), typeof(DapperStringType));
+                }
+            }
+
             public object Parse(global::System.Type destinationType, object value) => Converter.Wrap((TInner)value)!;
-            public void SetValue(global::System.Data.IDbDataParameter parameter, object value) => parameter.Value = Converter.Unwrap((TIdentifier)value);
+
+            public void SetValue(global::System.Data.IDbDataParameter parameter, object value)
+            {
+                if (global::System.DBNull.Value.Equals(value))
+                {
+                    parameter.Value = global::System.DBNull.Value;
+                }
+                else
+                {
+                    parameter.Value = Converter.Unwrap((TIdentifier)value);
+                    if (dapperStringType != null)
+                    {
+                        if (dapperStringType.Length != null)
+                        {
+                            parameter.Size = dapperStringType.Length.Value;
+                            parameter.DbType = dapperStringType.IsAnsi
+                                ? global::System.Data.DbType.AnsiStringFixedLength
+                                : global::System.Data.DbType.StringFixedLength;
+                        }
+                        else
+                        {
+                            parameter.DbType = dapperStringType.IsAnsi
+                                ? global::System.Data.DbType.AnsiString
+                                : global::System.Data.DbType.String;
+                        }
+                    }
+                }
+            }
         }
 
         public void Dispatch<TIdentifier, TInner, TConverter>() where TConverter : IBrandedValueConverter<TIdentifier, TInner>, new()
