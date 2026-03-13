@@ -24,28 +24,6 @@
 
 namespace Branded.Integrations.Dapper
 {
-    /// <summary>
-    /// Configures how a string-branded type is mapped to the database.
-    /// </summary>
-    [global::System.AttributeUsage(global::System.AttributeTargets.Struct)]
-    internal sealed class DapperStringType : global::System.Attribute
-    {
-        public DapperStringType(bool isAnsi)
-        {
-            IsAnsi = isAnsi;
-        }
-
-        public DapperStringType(int length, bool isFixedLength = false, bool isAnsi = false) : this(isAnsi)
-        {
-            Length = length;
-            IsFixedLength = isFixedLength;
-        }
-
-        public int? Length { get; }
-        public bool IsFixedLength { get; }
-        public bool IsAnsi { get; }
-    }
-
     internal sealed class BrandedTypeRegistry : global::Branded.IBrandedTypeDispatcher
     {
         private BrandedTypeRegistry() { }
@@ -57,13 +35,13 @@ namespace Branded.Integrations.Dapper
         {
             private static readonly TConverter Converter = new TConverter();
 
-            private readonly DapperStringType? dapperStringType;
+            private readonly DbStringType? DbStringType;
 
             public IdentifierTypeHandler()
             {
                 if (typeof(TInner) == typeof(string))
                 {
-                    dapperStringType = (DapperStringType?)global::System.Attribute.GetCustomAttribute(typeof(TIdentifier), typeof(DapperStringType));
+                    DbStringType = (DbStringType?)global::System.Attribute.GetCustomAttribute(typeof(TIdentifier), typeof(DbStringType));
                 }
             }
 
@@ -78,22 +56,22 @@ namespace Branded.Integrations.Dapper
                 else
                 {
                     parameter.Value = Converter.Unwrap((TIdentifier)value);
-                    if (dapperStringType != null)
+                    if (DbStringType != null)
                     {
-                        if (dapperStringType.Length != null)
+                        if (DbStringType.Length != null)
                         {
-                            parameter.Size = dapperStringType.Length.Value;
-                            parameter.DbType = dapperStringType.IsFixedLength
-                                ? dapperStringType.IsAnsi
+                            parameter.Size = DbStringType.Length.Value;
+                            parameter.DbType = DbStringType.IsFixedLength
+                                ? DbStringType.IsAnsi
                                     ? global::System.Data.DbType.AnsiStringFixedLength
                                     : global::System.Data.DbType.StringFixedLength
-                                : dapperStringType.IsAnsi
+                                : DbStringType.IsAnsi
                                     ? global::System.Data.DbType.AnsiString
                                     : global::System.Data.DbType.String;
                         }
                         else
                         {
-                            parameter.DbType = dapperStringType.IsAnsi
+                            parameter.DbType = DbStringType.IsAnsi
                                 ? global::System.Data.DbType.AnsiString
                                 : global::System.Data.DbType.String;
                         }
