@@ -159,3 +159,104 @@ public static class Program
 Widget { Id = 1, Owner = alex }
 Widget { Id = 2, Owner = alex }
 ```
+
+## Microsoft.EntityFrameworkCore
+
+The integration consists of an custom convention, `IdentifierConverterConvention`, that makes EntityFramework treat branded types as their underlying type. The convention must be registered in the `DbContext` by overriding `ConfigureConventions`:
+
+```c#
+protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+{
+    configurationBuilder.Conventions.Add(_ => new IdentifierConverterConvention());
+}
+```
+
+#### Example
+
+```csharp
+using Branded.Integrations.Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+
+namespace Branded.Showcase.Microsoft.EntityFrameworkCore;
+
+public static class Program
+{
+    public static void Main()
+    {
+        using (var db = new ShowcaseDbContext())
+        {
+            foreach (var existing in db.Widgets)
+            {
+                db.Widgets.Remove(existing);
+            }
+            db.SaveChanges();
+        }
+
+        using (var db = new ShowcaseDbContext())
+        {
+            db.Widgets.Add(new Widget
+            {
+                Id = new(1),
+                Owner = "alex"
+            });
+
+            db.Widgets.Add(new Widget
+            {
+                Id = new(2),
+                Owner = "alex"
+            });
+
+            db.Widgets.Add(new Widget
+            {
+                Id = new(3),
+                Owner = "rain"
+            });
+
+            db.SaveChanges();
+        }
+
+        using (var db = new ShowcaseDbContext())
+        {
+            var id = new WidgetIdentifier(2);
+
+            var results = db.Widgets
+                .Where(w => w.Id >= id);
+
+            foreach (var result in results)
+            {
+                Console.WriteLine($"Id: {result.Id}, Owner: {result.Owner}");
+            }
+        }
+    }
+}
+
+public class ShowcaseDbContext : DbContext
+{
+    public DbSet<Widget> Widgets { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseSqlServer("Data source=localhost; Integrated Security=SSPI; Initial Catalog=Sandbox; TrustServerCertificate=true");
+    }
+
+    protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+    {
+        configurationBuilder.Conventions.Add(_ => new IdentifierConverterConvention());
+    }
+}
+
+public readonly partial record struct WidgetIdentifier(int Id);
+
+public class Widget
+{
+    public required WidgetIdentifier Id { get; set; }
+    public required string Owner { get; set; }
+}
+```
+
+#### Output
+
+```
+Id: 2, Owner: alex
+Id: 3, Owner: rain
+```

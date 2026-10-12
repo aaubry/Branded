@@ -1,5 +1,5 @@
 ﻿// Branded - Branded types for C#
-// Copyright (C) 2025 Antoine Aubry
+// Copyright (C) 2025, 2026 Antoine Aubry
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by

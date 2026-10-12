@@ -1,5 +1,5 @@
 ﻿// Branded - Branded types for C#
-// Copyright (C) 2025 Antoine Aubry
+// Copyright (C) 2025, 2026 Antoine Aubry
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -33,5 +33,10 @@ public static class Program
         Console.WriteLine("Dapper");
         Console.WriteLine("======");
         Branded.Showcase.Dapper.Program.Main();
+
+        Console.WriteLine();
+        Console.WriteLine("Microsoft.EntityFrameworkCore");
+        Console.WriteLine("=============================");
+        Branded.Showcase.Microsoft.EntityFrameworkCore.Program.Main();
     }
 }

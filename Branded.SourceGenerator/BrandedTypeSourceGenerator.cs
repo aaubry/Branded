@@ -1,5 +1,5 @@
 ﻿// Branded - Branded types for C#
-// Copyright (C) 2025 Antoine Aubry
+// Copyright (C) 2025, 2026 Antoine Aubry
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -491,17 +491,15 @@ namespace Branded.SourceGenerator
             SmallList<ImplementedInterface>? implementedInterfaces = null;
             foreach (var itf in parameter.Type.AllInterfaces)
             {
-                var interfaceIsGeneric = itf.IsGenericType && itf.Arity == 1 && itf.TypeArguments[0].Equals(parameter.Type, SymbolEqualityComparer.Default);
-                var lookupItf = interfaceIsGeneric ? itf.ConstructedFrom : itf;
-
+                var lookupItf = itf.IsGenericType ? itf.ConstructedFrom : itf;
                 var lookupItfName = lookupItf.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
-                if (interfaceImplementationGenerators.ContainsKey(lookupItfName))
+                if (interfaceImplementationGenerators.TryGetValue(lookupItfName, out var builder))
                 {
-                    var implementedType = interfaceIsGeneric ? lookupItf.Construct(namedTypeSymbol) : lookupItf;
-                    SmallList.Push(ref implementedInterfaces, new ImplementedInterface(
-                        lookupItfName,
-                        implementedType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)
-                    ));
+                    var implementedInterface = builder(itf, parameter.Type, namedTypeSymbol);
+                    if (implementedInterface is not null)
+                    {
+                        SmallList.Push(ref implementedInterfaces, implementedInterface);
+                    }
                 }
             }
 
@@ -527,8 +525,8 @@ namespace Branded.SourceGenerator
         );
 
         private sealed record ImplementedInterface(
-            string LookupName,
-            string FullName
+            string FullName,
+            InterfaceImplementationGeneratorDeletage Generator
         );
 
         private sealed record Result<T>(T? Value, SmallList<Diagnostic>? Diagnostics = null)
@@ -560,32 +558,72 @@ namespace Branded.SourceGenerator
 
         private delegate void InterfaceImplementationGeneratorDeletage(StringBuilder source, BrandedTypeCandidate targetType, ImplementedInterface itf);
 
-        private static readonly Dictionary<string, InterfaceImplementationGeneratorDeletage> interfaceImplementationGenerators = new()
+        private static readonly string[] ComparisonOperators = ["<", "<=", ">", ">="];
+
+        private static readonly Dictionary<string, Func<INamedTypeSymbol, ITypeSymbol, INamedTypeSymbol, ImplementedInterface?>> interfaceImplementationGenerators = new()
         {
             {
                 "global::System.IComparable",
-                (source, targetType, parameter) => source
-                    .Append("    int global::System.IComparable.CompareTo(object other) => CompareTo((")
-                    .Append(targetType.FullName)
-                    .Append(")other);\n")
+                (itf, inner, branded) => new ImplementedInterface(
+                    itf.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat),
+                    (source, targetType, parameter) => source
+                        .Append("    int global::System.IComparable.CompareTo(object other) => CompareTo((")
+                        .Append(targetType.FullName)
+                        .Append(")other);\n")
+                )
             },
             {
                 "global::System.IFormattable",
-                (source, targetType, parameter) => source
-                    .Append("    public string ToString(string format, global::System.IFormatProvider formatProvider) => ")
-                    .Append(targetType.PropertyName)
-                    .Append(".ToString(format, formatProvider);\n")
+                (itf, inner, branded) => new ImplementedInterface(
+                    itf.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat),
+                    (source, targetType, parameter) => source
+                        .Append("    public string ToString(string format, global::System.IFormatProvider formatProvider) => ")
+                        .Append(targetType.PropertyName)
+                        .Append(".ToString(format, formatProvider);\n")
+                )
             },
             {
                 "global::System.IComparable<T>",
-                (source, targetType, parameter) => source
-                    .Append("    public int CompareTo(")
-                    .Append(targetType.FullName)
-                    .Append(" other) => ")
-                    .Append(targetType.PropertyName)
-                    .Append(".CompareTo(other.")
-                    .Append(targetType.PropertyName)
-                    .Append(");\n")
+                (itf, inner, branded) => itf.TypeArguments[0].Equals(inner, SymbolEqualityComparer.Default)
+                    ? new ImplementedInterface(
+                        itf.ConstructedFrom.Construct(branded).ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat),
+                        (source, targetType, parameter) => source
+                            .Append("    public int CompareTo(")
+                            .Append(targetType.FullName)
+                            .Append(" other) => ")
+                            .Append(targetType.PropertyName)
+                            .Append(".CompareTo(other.")
+                            .Append(targetType.PropertyName)
+                            .Append(");\n")
+                    )
+                    : null
+            },
+            {
+                "global::System.Numerics.IComparisonOperators<TSelf, TOther, TResult>",
+                (itf, inner, branded) => itf.TypeArguments[0].Equals(inner, SymbolEqualityComparer.Default)
+                    && itf.TypeArguments[1].Equals(inner, SymbolEqualityComparer.Default)
+                    ? new ImplementedInterface(
+                        itf.ConstructedFrom.Construct(branded, branded, itf.TypeArguments[2]).ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat),
+                        (source, targetType, parameter) => {
+                            foreach (var comparisonOperator in ComparisonOperators)
+                            {
+                                source
+                                    .Append("    public static bool operator ")
+                                    .Append(comparisonOperator)
+                                    .Append('(')
+                                    .Append(targetType.FullName)
+                                    .Append(" left, ")
+                                    .Append(targetType.FullName)
+                                    .Append(" right) => left.")
+                                    .Append(targetType.PropertyName)
+                                    .Append(' ')
+                                    .Append(comparisonOperator)
+                                    .Append(" right.")
+                                    .Append(targetType.PropertyName)
+                                    .Append(";\n");
+                            }
+                        })
+                    : null
             }
         };
 
@@ -705,7 +743,7 @@ namespace Branded.SourceGenerator
                 foreach (var itf in targetType.ImplementedInterfaces)
                 {
                     source.Append('\n');
-                    interfaceImplementationGenerators[itf.LookupName](source, targetType, itf);
+                    itf.Generator(source, targetType, itf);
                 }
             }
 

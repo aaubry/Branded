@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
+        <TargetFramework>net10.0</TargetFramework>
         <ImplicitUsings>disable</ImplicitUsings>
         <Nullable>disable</Nullable>
         <LangVersion>8.0</LangVersion>
@@ -33,8 +33,8 @@
 
     <ItemGroup>
       <PackageReference Include="Dapper" Version="2.0.4" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.12" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-      <PackageReference Include="System.Text.Json" Version="9.0.6" />
     </ItemGroup>
 
     <ItemGroup>

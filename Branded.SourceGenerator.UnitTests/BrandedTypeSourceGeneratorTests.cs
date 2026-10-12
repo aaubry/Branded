@@ -1,5 +1,5 @@
 // Branded - Branded types for C#
-// Copyright (C) 2025 Antoine Aubry
+// Copyright (C) 2025, 2026 Antoine Aubry
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -55,6 +55,7 @@ public class BrandedTypeSourceGeneratorTests
                         partial record struct MyIdentifier
                             : global::System.IComparable
                             , global::System.IComparable<global::MyPrefix.MyNamespace.MyIdentifier>
+                            , global::System.Numerics.IComparisonOperators<global::MyPrefix.MyNamespace.MyIdentifier, global::MyPrefix.MyNamespace.MyIdentifier, bool>
                             , global::System.IFormattable
                         {
                             public sealed class Converter : global::Branded.IBrandedValueConverter<global::MyPrefix.MyNamespace.MyIdentifier, long>
@@ -72,6 +73,11 @@ public class BrandedTypeSourceGeneratorTests
                             int global::System.IComparable.CompareTo(object other) => CompareTo((global::MyPrefix.MyNamespace.MyIdentifier)other);
 
                             public int CompareTo(global::MyPrefix.MyNamespace.MyIdentifier other) => Id.CompareTo(other.Id);
+                        
+                            public static bool operator <(global::MyPrefix.MyNamespace.MyIdentifier left, global::MyPrefix.MyNamespace.MyIdentifier right) => left.Id < right.Id;
+                            public static bool operator <=(global::MyPrefix.MyNamespace.MyIdentifier left, global::MyPrefix.MyNamespace.MyIdentifier right) => left.Id <= right.Id;
+                            public static bool operator >(global::MyPrefix.MyNamespace.MyIdentifier left, global::MyPrefix.MyNamespace.MyIdentifier right) => left.Id > right.Id;
+                            public static bool operator >=(global::MyPrefix.MyNamespace.MyIdentifier left, global::MyPrefix.MyNamespace.MyIdentifier right) => left.Id >= right.Id;
 
                             public string ToString(string format, global::System.IFormatProvider formatProvider) => Id.ToString(format, formatProvider);
                         }
@@ -119,6 +125,7 @@ public class BrandedTypeSourceGeneratorTests
                         partial record struct MyIdentifier
                             : global::System.IComparable
                             , global::System.IComparable<global::MyNamespace.MyIdentifier>
+                            , global::System.Numerics.IComparisonOperators<global::MyNamespace.MyIdentifier, global::MyNamespace.MyIdentifier, bool>
                             , global::System.IFormattable
                         {
                             public override string ToString() => Id.ToString();
@@ -128,6 +135,11 @@ public class BrandedTypeSourceGeneratorTests
                             int global::System.IComparable.CompareTo(object other) => CompareTo((global::MyNamespace.MyIdentifier)other);
 
                             public int CompareTo(global::MyNamespace.MyIdentifier other) => Id.CompareTo(other.Id);
+
+                            public static bool operator <(global::MyNamespace.MyIdentifier left, global::MyNamespace.MyIdentifier right) => left.Id < right.Id;
+                            public static bool operator <=(global::MyNamespace.MyIdentifier left, global::MyNamespace.MyIdentifier right) => left.Id <= right.Id;
+                            public static bool operator >(global::MyNamespace.MyIdentifier left, global::MyNamespace.MyIdentifier right) => left.Id > right.Id;
+                            public static bool operator >=(global::MyNamespace.MyIdentifier left, global::MyNamespace.MyIdentifier right) => left.Id >= right.Id;
 
                             public string ToString(string format, global::System.IFormatProvider formatProvider) => Id.ToString(format, formatProvider);
                         }
@@ -224,6 +236,7 @@ public class BrandedTypeSourceGeneratorTests
                         partial record struct MyIdentifier
                             : global::System.IComparable
                             , global::System.IComparable<global::MyNamespace.MyIdentifier>
+                            , global::System.Numerics.IComparisonOperators<global::MyNamespace.MyIdentifier, global::MyNamespace.MyIdentifier, bool>
                             , global::System.IFormattable
                         {
                             public sealed class Converter : global::Branded.IBrandedValueConverter<global::MyNamespace.MyIdentifier, long>
@@ -241,6 +254,11 @@ public class BrandedTypeSourceGeneratorTests
                             int global::System.IComparable.CompareTo(object other) => CompareTo((global::MyNamespace.MyIdentifier)other);
 
                             public int CompareTo(global::MyNamespace.MyIdentifier other) => Id.CompareTo(other.Id);
+
+                            public static bool operator <(global::MyNamespace.MyIdentifier left, global::MyNamespace.MyIdentifier right) => left.Id < right.Id;
+                            public static bool operator <=(global::MyNamespace.MyIdentifier left, global::MyNamespace.MyIdentifier right) => left.Id <= right.Id;
+                            public static bool operator >(global::MyNamespace.MyIdentifier left, global::MyNamespace.MyIdentifier right) => left.Id > right.Id;
+                            public static bool operator >=(global::MyNamespace.MyIdentifier left, global::MyNamespace.MyIdentifier right) => left.Id >= right.Id;
 
                             public string ToString(string format, global::System.IFormatProvider formatProvider) => Id.ToString(format, formatProvider);
                         }
@@ -331,6 +349,7 @@ public class BrandedTypeSourceGeneratorTests
                         partial record struct MyIdentifier
                             : global::System.IComparable
                             , global::System.IComparable<global::MyNamespace.MyIdentifier>
+                            , global::System.Numerics.IComparisonOperators<global::MyNamespace.MyIdentifier, global::MyNamespace.MyIdentifier, bool>
                             , global::System.IFormattable
                         {
                             public sealed class Converter : global::Branded.IBrandedValueConverter<global::MyNamespace.MyIdentifier, long>
@@ -348,6 +367,11 @@ public class BrandedTypeSourceGeneratorTests
                             int global::System.IComparable.CompareTo(object other) => CompareTo((global::MyNamespace.MyIdentifier)other);
 
                             public int CompareTo(global::MyNamespace.MyIdentifier other) => Id.CompareTo(other.Id);
+
+                            public static bool operator <(global::MyNamespace.MyIdentifier left, global::MyNamespace.MyIdentifier right) => left.Id < right.Id;
+                            public static bool operator <=(global::MyNamespace.MyIdentifier left, global::MyNamespace.MyIdentifier right) => left.Id <= right.Id;
+                            public static bool operator >(global::MyNamespace.MyIdentifier left, global::MyNamespace.MyIdentifier right) => left.Id > right.Id;
+                            public static bool operator >=(global::MyNamespace.MyIdentifier left, global::MyNamespace.MyIdentifier right) => left.Id >= right.Id;
 
                             public string ToString(string format, global::System.IFormatProvider formatProvider) => Id.ToString(format, formatProvider);
                         }
@@ -450,6 +474,7 @@ public class BrandedTypeSourceGeneratorTests
                         partial record struct MyIdentifier
                             : global::System.IComparable
                             , global::System.IComparable<global::MyNamespace.MyIdentifier>
+                            , global::System.Numerics.IComparisonOperators<global::MyNamespace.MyIdentifier, global::MyNamespace.MyIdentifier, bool>
                             , global::System.IFormattable
                         {
                             public sealed class Converter : global::Branded.IBrandedValueConverter<global::MyNamespace.MyIdentifier, long>
@@ -467,6 +492,11 @@ public class BrandedTypeSourceGeneratorTests
                             int global::System.IComparable.CompareTo(object other) => CompareTo((global::MyNamespace.MyIdentifier)other);
 
                             public int CompareTo(global::MyNamespace.MyIdentifier other) => Id.CompareTo(other.Id);
+
+                            public static bool operator <(global::MyNamespace.MyIdentifier left, global::MyNamespace.MyIdentifier right) => left.Id < right.Id;
+                            public static bool operator <=(global::MyNamespace.MyIdentifier left, global::MyNamespace.MyIdentifier right) => left.Id <= right.Id;
+                            public static bool operator >(global::MyNamespace.MyIdentifier left, global::MyNamespace.MyIdentifier right) => left.Id > right.Id;
+                            public static bool operator >=(global::MyNamespace.MyIdentifier left, global::MyNamespace.MyIdentifier right) => left.Id >= right.Id;
 
                             public string ToString(string format, global::System.IFormatProvider formatProvider) => Id.ToString(format, formatProvider);
                         }
@@ -537,6 +567,7 @@ public class BrandedTypeSourceGeneratorTests
                         partial record struct MyIdentifier
                             : global::System.IComparable
                             , global::System.IComparable<global::MyNamespace.MyIdentifier>
+                            , global::System.Numerics.IComparisonOperators<global::MyNamespace.MyIdentifier, global::MyNamespace.MyIdentifier, bool>
                             , global::System.IFormattable
                         {
                             public sealed class Converter : global::Branded.IBrandedValueConverter<global::MyNamespace.MyIdentifier, long>
@@ -554,6 +585,11 @@ public class BrandedTypeSourceGeneratorTests
                             int global::System.IComparable.CompareTo(object other) => CompareTo((global::MyNamespace.MyIdentifier)other);
 
                             public int CompareTo(global::MyNamespace.MyIdentifier other) => Id.CompareTo(other.Id);
+
+                            public static bool operator <(global::MyNamespace.MyIdentifier left, global::MyNamespace.MyIdentifier right) => left.Id < right.Id;
+                            public static bool operator <=(global::MyNamespace.MyIdentifier left, global::MyNamespace.MyIdentifier right) => left.Id <= right.Id;
+                            public static bool operator >(global::MyNamespace.MyIdentifier left, global::MyNamespace.MyIdentifier right) => left.Id > right.Id;
+                            public static bool operator >=(global::MyNamespace.MyIdentifier left, global::MyNamespace.MyIdentifier right) => left.Id >= right.Id;
 
                             public string ToString(string format, global::System.IFormatProvider formatProvider) => Id.ToString(format, formatProvider);
                         }
@@ -622,6 +658,7 @@ public class BrandedTypeSourceGeneratorTests
                         partial record struct MyIdentifier
                             : global::System.IComparable
                             , global::System.IComparable<global::MyNamespace.MyIdentifier>
+                            , global::System.Numerics.IComparisonOperators<global::MyNamespace.MyIdentifier, global::MyNamespace.MyIdentifier, bool>
                             , global::System.IFormattable
                         {
                             public sealed class Converter : global::Branded.IBrandedValueConverter<global::MyNamespace.MyIdentifier, long>
@@ -639,6 +676,11 @@ public class BrandedTypeSourceGeneratorTests
                             int global::System.IComparable.CompareTo(object other) => CompareTo((global::MyNamespace.MyIdentifier)other);
 
                             public int CompareTo(global::MyNamespace.MyIdentifier other) => Id.CompareTo(other.Id);
+
+                            public static bool operator <(global::MyNamespace.MyIdentifier left, global::MyNamespace.MyIdentifier right) => left.Id < right.Id;
+                            public static bool operator <=(global::MyNamespace.MyIdentifier left, global::MyNamespace.MyIdentifier right) => left.Id <= right.Id;
+                            public static bool operator >(global::MyNamespace.MyIdentifier left, global::MyNamespace.MyIdentifier right) => left.Id > right.Id;
+                            public static bool operator >=(global::MyNamespace.MyIdentifier left, global::MyNamespace.MyIdentifier right) => left.Id >= right.Id;
 
                             public string ToString(string format, global::System.IFormatProvider formatProvider) => Id.ToString(format, formatProvider);
                         }
@@ -712,6 +754,7 @@ public class BrandedTypeSourceGeneratorTests
                         partial record struct MyIdentifier
                             : global::System.IComparable
                             , global::System.IComparable<global::MyNamespace.MyIdentifier>
+                            , global::System.Numerics.IComparisonOperators<global::MyNamespace.MyIdentifier, global::MyNamespace.MyIdentifier, bool>
                             , global::System.IFormattable
                         {
                             public sealed class Converter : global::Branded.IBrandedValueConverter<global::MyNamespace.MyIdentifier, long>
@@ -729,6 +772,11 @@ public class BrandedTypeSourceGeneratorTests
                             int global::System.IComparable.CompareTo(object other) => CompareTo((global::MyNamespace.MyIdentifier)other);
 
                             public int CompareTo(global::MyNamespace.MyIdentifier other) => Id.CompareTo(other.Id);
+
+                            public static bool operator <(global::MyNamespace.MyIdentifier left, global::MyNamespace.MyIdentifier right) => left.Id < right.Id;
+                            public static bool operator <=(global::MyNamespace.MyIdentifier left, global::MyNamespace.MyIdentifier right) => left.Id <= right.Id;
+                            public static bool operator >(global::MyNamespace.MyIdentifier left, global::MyNamespace.MyIdentifier right) => left.Id > right.Id;
+                            public static bool operator >=(global::MyNamespace.MyIdentifier left, global::MyNamespace.MyIdentifier right) => left.Id >= right.Id;
 
                             public string ToString(string format, global::System.IFormatProvider formatProvider) => Id.ToString(format, formatProvider);
                         }
@@ -787,6 +835,7 @@ public class BrandedTypeSourceGeneratorTests
                         partial record struct MyIdentifier
                             : global::System.IComparable
                             , global::System.IComparable<global::MyNamespace.MyIdentifier>
+                            , global::System.Numerics.IComparisonOperators<global::MyNamespace.MyIdentifier, global::MyNamespace.MyIdentifier, bool>
                             , global::System.IFormattable
                         {
                             public sealed class Converter : global::Branded.IBrandedValueConverter<global::MyNamespace.MyIdentifier, int>
@@ -804,6 +853,11 @@ public class BrandedTypeSourceGeneratorTests
                             int global::System.IComparable.CompareTo(object other) => CompareTo((global::MyNamespace.MyIdentifier)other);
 
                             public int CompareTo(global::MyNamespace.MyIdentifier other) => Id.CompareTo(other.Id);
+
+                            public static bool operator <(global::MyNamespace.MyIdentifier left, global::MyNamespace.MyIdentifier right) => left.Id < right.Id;
+                            public static bool operator <=(global::MyNamespace.MyIdentifier left, global::MyNamespace.MyIdentifier right) => left.Id <= right.Id;
+                            public static bool operator >(global::MyNamespace.MyIdentifier left, global::MyNamespace.MyIdentifier right) => left.Id > right.Id;
+                            public static bool operator >=(global::MyNamespace.MyIdentifier left, global::MyNamespace.MyIdentifier right) => left.Id >= right.Id;
 
                             public string ToString(string format, global::System.IFormatProvider formatProvider) => Id.ToString(format, formatProvider);
                         }
@@ -861,6 +915,7 @@ public class BrandedTypeSourceGeneratorTests
                         partial record struct MyIdentifier
                             : global::System.IComparable
                             , global::System.IComparable<global::MyNamespace.MyIdentifier>
+                            , global::System.Numerics.IComparisonOperators<global::MyNamespace.MyIdentifier, global::MyNamespace.MyIdentifier, bool>
                             , global::System.IFormattable
                         {
                             public sealed class Converter : global::Branded.IBrandedValueConverter<global::MyNamespace.MyIdentifier, long>
@@ -878,6 +933,11 @@ public class BrandedTypeSourceGeneratorTests
                             int global::System.IComparable.CompareTo(object other) => CompareTo((global::MyNamespace.MyIdentifier)other);
 
                             public int CompareTo(global::MyNamespace.MyIdentifier other) => Id.CompareTo(other.Id);
+
+                            public static bool operator <(global::MyNamespace.MyIdentifier left, global::MyNamespace.MyIdentifier right) => left.Id < right.Id;
+                            public static bool operator <=(global::MyNamespace.MyIdentifier left, global::MyNamespace.MyIdentifier right) => left.Id <= right.Id;
+                            public static bool operator >(global::MyNamespace.MyIdentifier left, global::MyNamespace.MyIdentifier right) => left.Id > right.Id;
+                            public static bool operator >=(global::MyNamespace.MyIdentifier left, global::MyNamespace.MyIdentifier right) => left.Id >= right.Id;
 
                             public string ToString(string format, global::System.IFormatProvider formatProvider) => Id.ToString(format, formatProvider);
                         }
@@ -935,6 +995,7 @@ public class BrandedTypeSourceGeneratorTests
                         partial record struct MyIdentifier
                             : global::System.IComparable
                             , global::System.IComparable<global::MyNamespace.MyIdentifier>
+                            , global::System.Numerics.IComparisonOperators<global::MyNamespace.MyIdentifier, global::MyNamespace.MyIdentifier, bool>
                             , global::System.IFormattable
                         {
                             public sealed class Converter : global::Branded.IBrandedValueConverter<global::MyNamespace.MyIdentifier, long>
@@ -952,6 +1013,11 @@ public class BrandedTypeSourceGeneratorTests
                             int global::System.IComparable.CompareTo(object other) => CompareTo((global::MyNamespace.MyIdentifier)other);
 
                             public int CompareTo(global::MyNamespace.MyIdentifier other) => Id.CompareTo(other.Id);
+
+                            public static bool operator <(global::MyNamespace.MyIdentifier left, global::MyNamespace.MyIdentifier right) => left.Id < right.Id;
+                            public static bool operator <=(global::MyNamespace.MyIdentifier left, global::MyNamespace.MyIdentifier right) => left.Id <= right.Id;
+                            public static bool operator >(global::MyNamespace.MyIdentifier left, global::MyNamespace.MyIdentifier right) => left.Id > right.Id;
+                            public static bool operator >=(global::MyNamespace.MyIdentifier left, global::MyNamespace.MyIdentifier right) => left.Id >= right.Id;
 
                             public string ToString(string format, global::System.IFormatProvider formatProvider) => Id.ToString(format, formatProvider);
                         }
@@ -1024,6 +1090,7 @@ public class BrandedTypeSourceGeneratorTests
                         partial record struct MyIdentifier
                             : global::System.IComparable
                             , global::System.IComparable<global::MyNamespace.MyIdentifier>
+                            , global::System.Numerics.IComparisonOperators<global::MyNamespace.MyIdentifier, global::MyNamespace.MyIdentifier, bool>
                             , global::System.IFormattable
                         {
                             public sealed class Converter : global::Branded.IBrandedValueConverter<global::MyNamespace.MyIdentifier, long>
@@ -1041,6 +1108,11 @@ public class BrandedTypeSourceGeneratorTests
                             int global::System.IComparable.CompareTo(object other) => CompareTo((global::MyNamespace.MyIdentifier)other);
 
                             public int CompareTo(global::MyNamespace.MyIdentifier other) => Id.CompareTo(other.Id);
+
+                            public static bool operator <(global::MyNamespace.MyIdentifier left, global::MyNamespace.MyIdentifier right) => left.Id < right.Id;
+                            public static bool operator <=(global::MyNamespace.MyIdentifier left, global::MyNamespace.MyIdentifier right) => left.Id <= right.Id;
+                            public static bool operator >(global::MyNamespace.MyIdentifier left, global::MyNamespace.MyIdentifier right) => left.Id > right.Id;
+                            public static bool operator >=(global::MyNamespace.MyIdentifier left, global::MyNamespace.MyIdentifier right) => left.Id >= right.Id;
 
                             public string ToString(string format, global::System.IFormatProvider formatProvider) => Id.ToString(format, formatProvider);
                         }
@@ -1086,6 +1158,7 @@ public class BrandedTypeSourceGeneratorTests
                         partial record struct MyIdentifier
                             : global::System.IComparable
                             , global::System.IComparable<global::MyPrefix.MyNamespace.MyIdentifier>
+                            , global::System.Numerics.IComparisonOperators<global::MyPrefix.MyNamespace.MyIdentifier, global::MyPrefix.MyNamespace.MyIdentifier, bool>
                             , global::System.IFormattable
                         {
                             public override string ToString() => Id.ToString();
@@ -1096,6 +1169,11 @@ public class BrandedTypeSourceGeneratorTests
 
                             public int CompareTo(global::MyPrefix.MyNamespace.MyIdentifier other) => Id.CompareTo(other.Id);
 
+                            public static bool operator <(global::MyPrefix.MyNamespace.MyIdentifier left, global::MyPrefix.MyNamespace.MyIdentifier right) => left.Id < right.Id;
+                            public static bool operator <=(global::MyPrefix.MyNamespace.MyIdentifier left, global::MyPrefix.MyNamespace.MyIdentifier right) => left.Id <= right.Id;
+                            public static bool operator >(global::MyPrefix.MyNamespace.MyIdentifier left, global::MyPrefix.MyNamespace.MyIdentifier right) => left.Id > right.Id;
+                            public static bool operator >=(global::MyPrefix.MyNamespace.MyIdentifier left, global::MyPrefix.MyNamespace.MyIdentifier right) => left.Id >= right.Id;
+                        
                             public string ToString(string format, global::System.IFormatProvider formatProvider) => Id.ToString(format, formatProvider);
                         }
                         """,
