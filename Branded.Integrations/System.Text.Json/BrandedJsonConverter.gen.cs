@@ -28,6 +28,38 @@
     {
         new[]
         {
+            typeof(global::Branded.Integrations.System.Text.Json.UInt16BrandedJsonConverter<,>),
+            typeof(global::Branded.BrandedTypePlaceholder),
+            typeof(global::Branded.BrandedConverterTypePlaceholder)
+        },
+    },
+    OnlyForInnerTypes = new[]
+    {
+        typeof(global::System.UInt16)
+    }
+)]
+[assembly: global::Branded.SourceGeneratorCustomAttribute(
+    typeof(global::System.Text.Json.Serialization.JsonConverter),
+    ConstructorArguments = new object[]
+    {
+        new[]
+        {
+            typeof(global::Branded.Integrations.System.Text.Json.Int16BrandedJsonConverter<,>),
+            typeof(global::Branded.BrandedTypePlaceholder),
+            typeof(global::Branded.BrandedConverterTypePlaceholder)
+        },
+    },
+    OnlyForInnerTypes = new[]
+    {
+        typeof(global::System.Int16)
+    }
+)]
+[assembly: global::Branded.SourceGeneratorCustomAttribute(
+    typeof(global::System.Text.Json.Serialization.JsonConverter),
+    ConstructorArguments = new object[]
+    {
+        new[]
+        {
             typeof(global::Branded.Integrations.System.Text.Json.Int32BrandedJsonConverter<,>),
             typeof(global::Branded.BrandedTypePlaceholder),
             typeof(global::Branded.BrandedConverterTypePlaceholder)
@@ -105,6 +137,54 @@
 
 namespace Branded.Integrations.System.Text.Json
 {
+
+    internal sealed class UInt16BrandedJsonConverter<TBranded, TFactory> : global::System.Text.Json.Serialization.JsonConverter<TBranded>
+        where TFactory : global::Branded.IBrandedValueConverter<TBranded, global::System.UInt16>, new()
+    {
+        private readonly TFactory factory = new TFactory();
+
+        public override TBranded Read(
+            ref global::System.Text.Json.Utf8JsonReader reader,
+            global::System.Type typeToConvert,
+            global::System.Text.Json.JsonSerializerOptions options
+        )
+        {
+            return factory.Wrap(reader.GetUInt16());
+        }
+
+        public override void Write(
+            global::System.Text.Json.Utf8JsonWriter writer,
+            TBranded value,
+            global::System.Text.Json.JsonSerializerOptions options
+        )
+        {
+            writer.WriteNumberValue(factory.Unwrap(value));
+        }
+    }
+
+    internal sealed class Int16BrandedJsonConverter<TBranded, TFactory> : global::System.Text.Json.Serialization.JsonConverter<TBranded>
+        where TFactory : global::Branded.IBrandedValueConverter<TBranded, global::System.Int16>, new()
+    {
+        private readonly TFactory factory = new TFactory();
+
+        public override TBranded Read(
+            ref global::System.Text.Json.Utf8JsonReader reader,
+            global::System.Type typeToConvert,
+            global::System.Text.Json.JsonSerializerOptions options
+        )
+        {
+            return factory.Wrap(reader.GetInt16());
+        }
+
+        public override void Write(
+            global::System.Text.Json.Utf8JsonWriter writer,
+            TBranded value,
+            global::System.Text.Json.JsonSerializerOptions options
+        )
+        {
+            writer.WriteNumberValue(factory.Unwrap(value));
+        }
+    }
 
     internal sealed class Int32BrandedJsonConverter<TBranded, TFactory> : global::System.Text.Json.Serialization.JsonConverter<TBranded>
         where TFactory : global::Branded.IBrandedValueConverter<TBranded, global::System.Int32>, new()

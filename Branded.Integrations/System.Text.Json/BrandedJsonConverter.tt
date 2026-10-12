@@ -32,6 +32,8 @@
 var possibleIdentifierTypes = new[]
 {
     // Only types that are likely to be identifiers are included here
+    typeof(ushort),
+    typeof(short),
     typeof(int),
     typeof(long),
     typeof(uint),
