@@ -2,12 +2,16 @@
 
 namespace Branded;
 
-public interface IBrandedType<TInner>
+public interface IBrandedType
 {
 #if NET7_0_OR_GREATER
     static abstract void Dispatch(IBrandedTypeDispatcher dispatcher);
     static abstract Type GetWrappedType();
 #endif
+}
+
+public interface IBrandedType<TInner> : IBrandedType
+{
     TInner Unwrap();
 }
 
