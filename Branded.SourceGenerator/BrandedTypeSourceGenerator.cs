@@ -17,6 +17,7 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -644,6 +645,18 @@ namespace Branded.SourceGenerator
 
             source.Append('\n');
 
+            if (brandedAssemblyReferenced)
+            {
+                source
+                    .Append("[global::System.ComponentModel.TypeConverter(typeof(global::Branded.IdentifierTypeConverter<")
+                    .Append(targetType.FullName)
+                    .Append(", ")
+                    .Append(targetType.InnerTypeName)
+                    .Append(", ")
+                    .Append(targetType.FullName)
+                    .Append(".Converter>))]\n");
+            }
+
             foreach (var customAttribute in customAttributes)
             {
                 if (customAttribute.OnlyForInnerTypes is not null && !customAttribute.OnlyForInnerTypes.Contains(targetType.InnerTypeName))
@@ -668,6 +681,19 @@ namespace Branded.SourceGenerator
                 .Append('\n');
 
             var isFirstInterface = true;
+
+            if (brandedAssemblyReferenced)
+            {
+                source
+                    .Append("    : global::Branded.IBrandedType<")
+                    .Append(targetType.FullName)
+                    .Append(", ")
+                    .Append(targetType.InnerTypeName)
+                    .Append(">\n");
+
+                isFirstInterface = false;
+            }
+
             if (targetType.ImplementedInterfaces is not null)
             {
                 foreach (var itf in targetType.ImplementedInterfaces)
@@ -721,7 +747,28 @@ namespace Branded.SourceGenerator
                     .Append(targetType.InnerTypeName)
                     .Append(", ")
                     .Append(targetType.FullName)
-                    .Append(".Converter>();\n\n");
+                    .Append(".Converter>();\n");
+
+                source
+                    .Append("    public static global::Branded.IBrandedValueConverter<")
+                    .Append(targetType.FullName)
+                    .Append(", ")
+                    .Append(targetType.InnerTypeName)
+                    .Append("> GetValueConverter() => new Converter();\n");
+
+                source
+                    .Append("    public static global::System.Type GetWrappedType() => typeof(")
+                    .Append(targetType.InnerTypeName)
+                    .Append(");\n");
+
+                source
+                    .Append("    ")
+                    .Append(targetType.InnerTypeName)
+                    .Append(" global::Branded.IBrandedType<")
+                    .Append(targetType.InnerTypeName)
+                    .Append(">.Unwrap() => ")
+                    .Append(targetType.PropertyName)
+                    .Append(";\n\n");
             }
 
             source
@@ -737,6 +784,15 @@ namespace Branded.SourceGenerator
                 .Append(" value) => value.")
                 .Append(targetType.PropertyName)
                 .Append(";\n");
+
+            source
+                .Append("    public static explicit operator ")
+                .Append(targetType.FullName)
+                .Append('(')
+                .Append(targetType.InnerTypeName)
+                .Append(" value) => new ")
+                .Append(targetType.FullName)
+                .Append("(value);\n");
 
             if (targetType.ImplementedInterfaces is not null)
             {

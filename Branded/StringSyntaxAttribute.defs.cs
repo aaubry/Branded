@@ -16,6 +16,7 @@
 
 namespace System.Diagnostics.CodeAnalysis;
 
+#if !NET7_0_OR_GREATER
 /// <summary>Fake version of the StringSyntaxAttribute, which was introduced in .NET 7</summary>
 internal sealed class StringSyntaxAttribute : Attribute
 {
@@ -29,3 +30,4 @@ internal sealed class StringSyntaxAttribute : Attribute
     {
     }
 }
+#endif

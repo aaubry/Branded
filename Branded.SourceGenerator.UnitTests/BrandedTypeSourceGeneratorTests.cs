@@ -52,8 +52,10 @@ public class BrandedTypeSourceGeneratorTests
                         #pragma warning disable 1591
                         namespace MyPrefix.MyNamespace;
 
+                        [global::System.ComponentModel.TypeConverter(typeof(global::Branded.IdentifierTypeConverter<global::MyPrefix.MyNamespace.MyIdentifier, long, global::MyPrefix.MyNamespace.MyIdentifier.Converter>))]
                         partial record struct MyIdentifier
-                            : global::System.IComparable
+                            : global::Branded.IBrandedType<global::MyPrefix.MyNamespace.MyIdentifier, long>
+                            , global::System.IComparable
                             , global::System.IComparable<global::MyPrefix.MyNamespace.MyIdentifier>
                             , global::System.Numerics.IComparisonOperators<global::MyPrefix.MyNamespace.MyIdentifier, global::MyPrefix.MyNamespace.MyIdentifier, bool>
                             , global::System.IFormattable
@@ -65,11 +67,15 @@ public class BrandedTypeSourceGeneratorTests
                             }
 
                             public static void Dispatch(global::Branded.IBrandedTypeDispatcher dispatcher) => dispatcher.Dispatch<global::MyPrefix.MyNamespace.MyIdentifier, long, global::MyPrefix.MyNamespace.MyIdentifier.Converter>();
+                            public static global::Branded.IBrandedValueConverter<global::MyPrefix.MyNamespace.MyIdentifier, long> GetValueConverter() => new Converter();
+                            public static global::System.Type GetWrappedType() => typeof(long);
+                            long global::Branded.IBrandedType<long>.Unwrap() => Id;
 
                             public override string ToString() => Id.ToString();
 
                             public static implicit operator long(global::MyPrefix.MyNamespace.MyIdentifier value) => value.Id;
-
+                            public static explicit operator global::MyPrefix.MyNamespace.MyIdentifier(long value) => new global::MyPrefix.MyNamespace.MyIdentifier(value);
+                        
                             int global::System.IComparable.CompareTo(object other) => CompareTo((global::MyPrefix.MyNamespace.MyIdentifier)other);
 
                             public int CompareTo(global::MyPrefix.MyNamespace.MyIdentifier other) => Id.CompareTo(other.Id);
@@ -131,7 +137,8 @@ public class BrandedTypeSourceGeneratorTests
                             public override string ToString() => Id.ToString();
 
                             public static implicit operator long(global::MyNamespace.MyIdentifier value) => value.Id;
-
+                            public static explicit operator global::MyNamespace.MyIdentifier(long value) => new global::MyNamespace.MyIdentifier(value);
+                        
                             int global::System.IComparable.CompareTo(object other) => CompareTo((global::MyNamespace.MyIdentifier)other);
 
                             public int CompareTo(global::MyNamespace.MyIdentifier other) => Id.CompareTo(other.Id);
@@ -233,8 +240,10 @@ public class BrandedTypeSourceGeneratorTests
                         #pragma warning disable 1591
                         namespace MyNamespace;
 
+                        [global::System.ComponentModel.TypeConverter(typeof(global::Branded.IdentifierTypeConverter<global::MyNamespace.MyIdentifier, long, global::MyNamespace.MyIdentifier.Converter>))]
                         partial record struct MyIdentifier
-                            : global::System.IComparable
+                            : global::Branded.IBrandedType<global::MyNamespace.MyIdentifier, long>
+                            , global::System.IComparable
                             , global::System.IComparable<global::MyNamespace.MyIdentifier>
                             , global::System.Numerics.IComparisonOperators<global::MyNamespace.MyIdentifier, global::MyNamespace.MyIdentifier, bool>
                             , global::System.IFormattable
@@ -246,10 +255,14 @@ public class BrandedTypeSourceGeneratorTests
                             }
 
                             public static void Dispatch(global::Branded.IBrandedTypeDispatcher dispatcher) => dispatcher.Dispatch<global::MyNamespace.MyIdentifier, long, global::MyNamespace.MyIdentifier.Converter>();
+                            public static global::Branded.IBrandedValueConverter<global::MyNamespace.MyIdentifier, long> GetValueConverter() => new Converter();
+                            public static global::System.Type GetWrappedType() => typeof(long);
+                            long global::Branded.IBrandedType<long>.Unwrap() => Id;
                         
                             public override string ToString() => Id.ToString();
 
                             public static implicit operator long(global::MyNamespace.MyIdentifier value) => value.Id;
+                            public static explicit operator global::MyNamespace.MyIdentifier(long value) => new global::MyNamespace.MyIdentifier(value);
 
                             int global::System.IComparable.CompareTo(object other) => CompareTo((global::MyNamespace.MyIdentifier)other);
 
@@ -346,8 +359,10 @@ public class BrandedTypeSourceGeneratorTests
                         #pragma warning disable 1591
                         namespace MyNamespace;
 
+                        [global::System.ComponentModel.TypeConverter(typeof(global::Branded.IdentifierTypeConverter<global::MyNamespace.MyIdentifier, long, global::MyNamespace.MyIdentifier.Converter>))]
                         partial record struct MyIdentifier
-                            : global::System.IComparable
+                            : global::Branded.IBrandedType<global::MyNamespace.MyIdentifier, long>
+                            , global::System.IComparable
                             , global::System.IComparable<global::MyNamespace.MyIdentifier>
                             , global::System.Numerics.IComparisonOperators<global::MyNamespace.MyIdentifier, global::MyNamespace.MyIdentifier, bool>
                             , global::System.IFormattable
@@ -359,11 +374,15 @@ public class BrandedTypeSourceGeneratorTests
                             }
                         
                             public static void Dispatch(global::Branded.IBrandedTypeDispatcher dispatcher) => dispatcher.Dispatch<global::MyNamespace.MyIdentifier, long, global::MyNamespace.MyIdentifier.Converter>();
-                        
+                            public static global::Branded.IBrandedValueConverter<global::MyNamespace.MyIdentifier, long> GetValueConverter() => new Converter();
+                            public static global::System.Type GetWrappedType() => typeof(long);
+                            long global::Branded.IBrandedType<long>.Unwrap() => Id;
+
                             public override string ToString() => Id.ToString();
 
                             public static implicit operator long(global::MyNamespace.MyIdentifier value) => value.Id;
-
+                            public static explicit operator global::MyNamespace.MyIdentifier(long value) => new global::MyNamespace.MyIdentifier(value);
+                        
                             int global::System.IComparable.CompareTo(object other) => CompareTo((global::MyNamespace.MyIdentifier)other);
 
                             public int CompareTo(global::MyNamespace.MyIdentifier other) => Id.CompareTo(other.Id);
@@ -468,11 +487,13 @@ public class BrandedTypeSourceGeneratorTests
                         #pragma warning disable 1591
                         namespace MyNamespace;
 
+                        [global::System.ComponentModel.TypeConverter(typeof(global::Branded.IdentifierTypeConverter<global::MyNamespace.MyIdentifier, long, global::MyNamespace.MyIdentifier.Converter>))]
                         [global::MyNamespace.MyFirstCustomAttribute()]
                         [global::MyNamespace.MySecondCustomAttribute()]
                         [global::MyNamespace.MyThirdCustomAttribute()]
                         partial record struct MyIdentifier
-                            : global::System.IComparable
+                            : global::Branded.IBrandedType<global::MyNamespace.MyIdentifier, long>
+                            , global::System.IComparable
                             , global::System.IComparable<global::MyNamespace.MyIdentifier>
                             , global::System.Numerics.IComparisonOperators<global::MyNamespace.MyIdentifier, global::MyNamespace.MyIdentifier, bool>
                             , global::System.IFormattable
@@ -484,11 +505,15 @@ public class BrandedTypeSourceGeneratorTests
                             }
 
                             public static void Dispatch(global::Branded.IBrandedTypeDispatcher dispatcher) => dispatcher.Dispatch<global::MyNamespace.MyIdentifier, long, global::MyNamespace.MyIdentifier.Converter>();
+                            public static global::Branded.IBrandedValueConverter<global::MyNamespace.MyIdentifier, long> GetValueConverter() => new Converter();
+                            public static global::System.Type GetWrappedType() => typeof(long);
+                            long global::Branded.IBrandedType<long>.Unwrap() => Id;
                         
                             public override string ToString() => Id.ToString();
 
                             public static implicit operator long(global::MyNamespace.MyIdentifier value) => value.Id;
-
+                            public static explicit operator global::MyNamespace.MyIdentifier(long value) => new global::MyNamespace.MyIdentifier(value);
+                        
                             int global::System.IComparable.CompareTo(object other) => CompareTo((global::MyNamespace.MyIdentifier)other);
 
                             public int CompareTo(global::MyNamespace.MyIdentifier other) => Id.CompareTo(other.Id);
@@ -563,9 +588,11 @@ public class BrandedTypeSourceGeneratorTests
                         #pragma warning disable 1591
                         namespace MyNamespace;
 
+                        [global::System.ComponentModel.TypeConverter(typeof(global::Branded.IdentifierTypeConverter<global::MyNamespace.MyIdentifier, long, global::MyNamespace.MyIdentifier.Converter>))]
                         [global::MyNamespace.MyCustomAttribute(typeof(global::MyNamespace.MyIdentifier), typeof(long), "hello, {0}", Details = "Some details")]
                         partial record struct MyIdentifier
-                            : global::System.IComparable
+                            : global::Branded.IBrandedType<global::MyNamespace.MyIdentifier, long>
+                            , global::System.IComparable
                             , global::System.IComparable<global::MyNamespace.MyIdentifier>
                             , global::System.Numerics.IComparisonOperators<global::MyNamespace.MyIdentifier, global::MyNamespace.MyIdentifier, bool>
                             , global::System.IFormattable
@@ -577,11 +604,15 @@ public class BrandedTypeSourceGeneratorTests
                             }
 
                             public static void Dispatch(global::Branded.IBrandedTypeDispatcher dispatcher) => dispatcher.Dispatch<global::MyNamespace.MyIdentifier, long, global::MyNamespace.MyIdentifier.Converter>();
-                        
+                            public static global::Branded.IBrandedValueConverter<global::MyNamespace.MyIdentifier, long> GetValueConverter() => new Converter();
+                            public static global::System.Type GetWrappedType() => typeof(long);
+                            long global::Branded.IBrandedType<long>.Unwrap() => Id;
+
                             public override string ToString() => Id.ToString();
 
                             public static implicit operator long(global::MyNamespace.MyIdentifier value) => value.Id;
-
+                            public static explicit operator global::MyNamespace.MyIdentifier(long value) => new global::MyNamespace.MyIdentifier(value);
+                        
                             int global::System.IComparable.CompareTo(object other) => CompareTo((global::MyNamespace.MyIdentifier)other);
 
                             public int CompareTo(global::MyNamespace.MyIdentifier other) => Id.CompareTo(other.Id);
@@ -654,9 +685,11 @@ public class BrandedTypeSourceGeneratorTests
                         #pragma warning disable 1591
                         namespace MyNamespace;
 
+                        [global::System.ComponentModel.TypeConverter(typeof(global::Branded.IdentifierTypeConverter<global::MyNamespace.MyIdentifier, long, global::MyNamespace.MyIdentifier.Converter>))]
                         [global::OtherNamespace.CustomConverterAttribute(typeof(global::MyNamespace.MyCustomConverter<global::MyNamespace.MyIdentifier, long, global::MyNamespace.MyIdentifier.Converter>))]
                         partial record struct MyIdentifier
-                            : global::System.IComparable
+                            : global::Branded.IBrandedType<global::MyNamespace.MyIdentifier, long>
+                            , global::System.IComparable
                             , global::System.IComparable<global::MyNamespace.MyIdentifier>
                             , global::System.Numerics.IComparisonOperators<global::MyNamespace.MyIdentifier, global::MyNamespace.MyIdentifier, bool>
                             , global::System.IFormattable
@@ -668,11 +701,15 @@ public class BrandedTypeSourceGeneratorTests
                             }
 
                             public static void Dispatch(global::Branded.IBrandedTypeDispatcher dispatcher) => dispatcher.Dispatch<global::MyNamespace.MyIdentifier, long, global::MyNamespace.MyIdentifier.Converter>();
-                        
+                            public static global::Branded.IBrandedValueConverter<global::MyNamespace.MyIdentifier, long> GetValueConverter() => new Converter();
+                            public static global::System.Type GetWrappedType() => typeof(long);
+                            long global::Branded.IBrandedType<long>.Unwrap() => Id;
+
                             public override string ToString() => Id.ToString();
 
                             public static implicit operator long(global::MyNamespace.MyIdentifier value) => value.Id;
-
+                            public static explicit operator global::MyNamespace.MyIdentifier(long value) => new global::MyNamespace.MyIdentifier(value);
+                        
                             int global::System.IComparable.CompareTo(object other) => CompareTo((global::MyNamespace.MyIdentifier)other);
 
                             public int CompareTo(global::MyNamespace.MyIdentifier other) => Id.CompareTo(other.Id);
@@ -750,9 +787,11 @@ public class BrandedTypeSourceGeneratorTests
                         #pragma warning disable 1591
                         namespace MyNamespace;
 
+                        [global::System.ComponentModel.TypeConverter(typeof(global::Branded.IdentifierTypeConverter<global::MyNamespace.MyIdentifier, long, global::MyNamespace.MyIdentifier.Converter>))]
                         [global::OtherNamespace.CustomConverterAttribute(typeof(global::MyNamespace.MyCustomConverter<global::MyNamespace.MyIdentifier, long, global::MyNamespace.MyIdentifier.Converter>))]
                         partial record struct MyIdentifier
-                            : global::System.IComparable
+                            : global::Branded.IBrandedType<global::MyNamespace.MyIdentifier, long>
+                            , global::System.IComparable
                             , global::System.IComparable<global::MyNamespace.MyIdentifier>
                             , global::System.Numerics.IComparisonOperators<global::MyNamespace.MyIdentifier, global::MyNamespace.MyIdentifier, bool>
                             , global::System.IFormattable
@@ -764,11 +803,15 @@ public class BrandedTypeSourceGeneratorTests
                             }
 
                             public static void Dispatch(global::Branded.IBrandedTypeDispatcher dispatcher) => dispatcher.Dispatch<global::MyNamespace.MyIdentifier, long, global::MyNamespace.MyIdentifier.Converter>();
-                        
+                            public static global::Branded.IBrandedValueConverter<global::MyNamespace.MyIdentifier, long> GetValueConverter() => new Converter();
+                            public static global::System.Type GetWrappedType() => typeof(long);
+                            long global::Branded.IBrandedType<long>.Unwrap() => Id;
+
                             public override string ToString() => Id.ToString();
 
                             public static implicit operator long(global::MyNamespace.MyIdentifier value) => value.Id;
-
+                            public static explicit operator global::MyNamespace.MyIdentifier(long value) => new global::MyNamespace.MyIdentifier(value);
+                        
                             int global::System.IComparable.CompareTo(object other) => CompareTo((global::MyNamespace.MyIdentifier)other);
 
                             public int CompareTo(global::MyNamespace.MyIdentifier other) => Id.CompareTo(other.Id);
@@ -831,9 +874,11 @@ public class BrandedTypeSourceGeneratorTests
                         #pragma warning disable 1591
                         namespace MyNamespace;
 
+                        [global::System.ComponentModel.TypeConverter(typeof(global::Branded.IdentifierTypeConverter<global::MyNamespace.MyIdentifier, int, global::MyNamespace.MyIdentifier.Converter>))]
                         [global::MyNamespace.OnlyForInt32Attribute()]
                         partial record struct MyIdentifier
-                            : global::System.IComparable
+                            : global::Branded.IBrandedType<global::MyNamespace.MyIdentifier, int>
+                            , global::System.IComparable
                             , global::System.IComparable<global::MyNamespace.MyIdentifier>
                             , global::System.Numerics.IComparisonOperators<global::MyNamespace.MyIdentifier, global::MyNamespace.MyIdentifier, bool>
                             , global::System.IFormattable
@@ -845,11 +890,15 @@ public class BrandedTypeSourceGeneratorTests
                             }
 
                             public static void Dispatch(global::Branded.IBrandedTypeDispatcher dispatcher) => dispatcher.Dispatch<global::MyNamespace.MyIdentifier, int, global::MyNamespace.MyIdentifier.Converter>();
-                        
+                            public static global::Branded.IBrandedValueConverter<global::MyNamespace.MyIdentifier, int> GetValueConverter() => new Converter();
+                            public static global::System.Type GetWrappedType() => typeof(int);
+                            int global::Branded.IBrandedType<int>.Unwrap() => Id;
+
                             public override string ToString() => Id.ToString();
 
                             public static implicit operator int(global::MyNamespace.MyIdentifier value) => value.Id;
-
+                            public static explicit operator global::MyNamespace.MyIdentifier(int value) => new global::MyNamespace.MyIdentifier(value);
+                        
                             int global::System.IComparable.CompareTo(object other) => CompareTo((global::MyNamespace.MyIdentifier)other);
 
                             public int CompareTo(global::MyNamespace.MyIdentifier other) => Id.CompareTo(other.Id);
@@ -912,8 +961,10 @@ public class BrandedTypeSourceGeneratorTests
                         #pragma warning disable 1591
                         namespace MyNamespace;
 
+                        [global::System.ComponentModel.TypeConverter(typeof(global::Branded.IdentifierTypeConverter<global::MyNamespace.MyIdentifier, long, global::MyNamespace.MyIdentifier.Converter>))]
                         partial record struct MyIdentifier
-                            : global::System.IComparable
+                            : global::Branded.IBrandedType<global::MyNamespace.MyIdentifier, long>
+                            , global::System.IComparable
                             , global::System.IComparable<global::MyNamespace.MyIdentifier>
                             , global::System.Numerics.IComparisonOperators<global::MyNamespace.MyIdentifier, global::MyNamespace.MyIdentifier, bool>
                             , global::System.IFormattable
@@ -925,11 +976,15 @@ public class BrandedTypeSourceGeneratorTests
                             }
 
                             public static void Dispatch(global::Branded.IBrandedTypeDispatcher dispatcher) => dispatcher.Dispatch<global::MyNamespace.MyIdentifier, long, global::MyNamespace.MyIdentifier.Converter>();
-                        
+                            public static global::Branded.IBrandedValueConverter<global::MyNamespace.MyIdentifier, long> GetValueConverter() => new Converter();
+                            public static global::System.Type GetWrappedType() => typeof(long);
+                            long global::Branded.IBrandedType<long>.Unwrap() => Id;
+
                             public override string ToString() => Id.ToString();
 
                             public static implicit operator long(global::MyNamespace.MyIdentifier value) => value.Id;
-
+                            public static explicit operator global::MyNamespace.MyIdentifier(long value) => new global::MyNamespace.MyIdentifier(value);
+                        
                             int global::System.IComparable.CompareTo(object other) => CompareTo((global::MyNamespace.MyIdentifier)other);
 
                             public int CompareTo(global::MyNamespace.MyIdentifier other) => Id.CompareTo(other.Id);
@@ -992,8 +1047,10 @@ public class BrandedTypeSourceGeneratorTests
                         #pragma warning disable 1591
                         namespace MyNamespace;
 
+                        [global::System.ComponentModel.TypeConverter(typeof(global::Branded.IdentifierTypeConverter<global::MyNamespace.MyIdentifier, long, global::MyNamespace.MyIdentifier.Converter>))]
                         partial record struct MyIdentifier
-                            : global::System.IComparable
+                            : global::Branded.IBrandedType<global::MyNamespace.MyIdentifier, long>
+                            , global::System.IComparable
                             , global::System.IComparable<global::MyNamespace.MyIdentifier>
                             , global::System.Numerics.IComparisonOperators<global::MyNamespace.MyIdentifier, global::MyNamespace.MyIdentifier, bool>
                             , global::System.IFormattable
@@ -1005,11 +1062,15 @@ public class BrandedTypeSourceGeneratorTests
                             }
 
                             public static void Dispatch(global::Branded.IBrandedTypeDispatcher dispatcher) => dispatcher.Dispatch<global::MyNamespace.MyIdentifier, long, global::MyNamespace.MyIdentifier.Converter>();
+                            public static global::Branded.IBrandedValueConverter<global::MyNamespace.MyIdentifier, long> GetValueConverter() => new Converter();
+                            public static global::System.Type GetWrappedType() => typeof(long);
+                            long global::Branded.IBrandedType<long>.Unwrap() => Id;
                         
                             public override string ToString() => Id.ToString();
 
                             public static implicit operator long(global::MyNamespace.MyIdentifier value) => value.Id;
-
+                            public static explicit operator global::MyNamespace.MyIdentifier(long value) => new global::MyNamespace.MyIdentifier(value);
+                        
                             int global::System.IComparable.CompareTo(object other) => CompareTo((global::MyNamespace.MyIdentifier)other);
 
                             public int CompareTo(global::MyNamespace.MyIdentifier other) => Id.CompareTo(other.Id);
@@ -1087,8 +1148,10 @@ public class BrandedTypeSourceGeneratorTests
                         #pragma warning disable 1591
                         namespace MyNamespace;
 
+                        [global::System.ComponentModel.TypeConverter(typeof(global::Branded.IdentifierTypeConverter<global::MyNamespace.MyIdentifier, long, global::MyNamespace.MyIdentifier.Converter>))]
                         partial record struct MyIdentifier
-                            : global::System.IComparable
+                            : global::Branded.IBrandedType<global::MyNamespace.MyIdentifier, long>
+                            , global::System.IComparable
                             , global::System.IComparable<global::MyNamespace.MyIdentifier>
                             , global::System.Numerics.IComparisonOperators<global::MyNamespace.MyIdentifier, global::MyNamespace.MyIdentifier, bool>
                             , global::System.IFormattable
@@ -1100,11 +1163,15 @@ public class BrandedTypeSourceGeneratorTests
                             }
 
                             public static void Dispatch(global::Branded.IBrandedTypeDispatcher dispatcher) => dispatcher.Dispatch<global::MyNamespace.MyIdentifier, long, global::MyNamespace.MyIdentifier.Converter>();
+                            public static global::Branded.IBrandedValueConverter<global::MyNamespace.MyIdentifier, long> GetValueConverter() => new Converter();
+                            public static global::System.Type GetWrappedType() => typeof(long);
+                            long global::Branded.IBrandedType<long>.Unwrap() => Id;
                         
                             public override string ToString() => Id.ToString();
 
                             public static implicit operator long(global::MyNamespace.MyIdentifier value) => value.Id;
-
+                            public static explicit operator global::MyNamespace.MyIdentifier(long value) => new global::MyNamespace.MyIdentifier(value);
+                        
                             int global::System.IComparable.CompareTo(object other) => CompareTo((global::MyNamespace.MyIdentifier)other);
 
                             public int CompareTo(global::MyNamespace.MyIdentifier other) => Id.CompareTo(other.Id);
@@ -1164,7 +1231,8 @@ public class BrandedTypeSourceGeneratorTests
                             public override string ToString() => Id.ToString();
 
                             public static implicit operator long(global::MyPrefix.MyNamespace.MyIdentifier value) => value.Id;
-
+                            public static explicit operator global::MyPrefix.MyNamespace.MyIdentifier(long value) => new global::MyPrefix.MyNamespace.MyIdentifier(value);
+                        
                             int global::System.IComparable.CompareTo(object other) => CompareTo((global::MyPrefix.MyNamespace.MyIdentifier)other);
 
                             public int CompareTo(global::MyPrefix.MyNamespace.MyIdentifier other) => Id.CompareTo(other.Id);
