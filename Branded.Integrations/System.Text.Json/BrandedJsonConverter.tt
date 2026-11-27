@@ -93,6 +93,32 @@ foreach (var possibleIdentifierType in possibleIdentifierTypes)
         {
             writer.Write<#= possibleIdentifierType == typeof(string) ? "String" : "Number" #>Value(factory.Unwrap(value));
         }
+
+        public override TBranded ReadAsPropertyName(
+            ref global::System.Text.Json.Utf8JsonReader reader,
+            global::System.Type typeToConvert,
+            global::System.Text.Json.JsonSerializerOptions options
+        )
+        {
+            var innerAsText = reader.GetString();
+            var inner = (global::<#= possibleIdentifierType.FullName #>)global::System.Convert.ChangeType(
+                innerAsText,
+                typeof(global::<#= possibleIdentifierType.FullName #>),
+                global::System.Globalization.CultureInfo.InvariantCulture
+            )!;
+            return factory.Wrap(inner);
+        }
+
+        public override void WriteAsPropertyName(
+            global::System.Text.Json.Utf8JsonWriter writer,
+            [global::System.Diagnostics.CodeAnalysis.DisallowNull] TBranded value,
+            global::System.Text.Json.JsonSerializerOptions options
+        )
+        {
+            var inner = factory.Unwrap(value);
+            var innerAsText = (string)global::System.Convert.ChangeType(inner, typeof(string), global::System.Globalization.CultureInfo.InvariantCulture);
+            writer.WritePropertyName(innerAsText);
+        }
     }
 
 <# } #>

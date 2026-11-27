@@ -160,6 +160,32 @@ namespace Branded.Integrations.System.Text.Json
         {
             writer.WriteNumberValue(factory.Unwrap(value));
         }
+
+        public override TBranded ReadAsPropertyName(
+            ref global::System.Text.Json.Utf8JsonReader reader,
+            global::System.Type typeToConvert,
+            global::System.Text.Json.JsonSerializerOptions options
+        )
+        {
+            var innerAsText = reader.GetString();
+            var inner = (global::System.UInt16)global::System.Convert.ChangeType(
+                innerAsText,
+                typeof(global::System.UInt16),
+                global::System.Globalization.CultureInfo.InvariantCulture
+            )!;
+            return factory.Wrap(inner);
+        }
+
+        public override void WriteAsPropertyName(
+            global::System.Text.Json.Utf8JsonWriter writer,
+            [global::System.Diagnostics.CodeAnalysis.DisallowNull] TBranded value,
+            global::System.Text.Json.JsonSerializerOptions options
+        )
+        {
+            var inner = factory.Unwrap(value);
+            var innerAsText = (string)global::System.Convert.ChangeType(inner, typeof(string), global::System.Globalization.CultureInfo.InvariantCulture);
+            writer.WritePropertyName(innerAsText);
+        }
     }
 
     internal sealed class Int16BrandedJsonConverter<TBranded, TFactory> : global::System.Text.Json.Serialization.JsonConverter<TBranded>
@@ -183,6 +209,32 @@ namespace Branded.Integrations.System.Text.Json
         )
         {
             writer.WriteNumberValue(factory.Unwrap(value));
+        }
+
+        public override TBranded ReadAsPropertyName(
+            ref global::System.Text.Json.Utf8JsonReader reader,
+            global::System.Type typeToConvert,
+            global::System.Text.Json.JsonSerializerOptions options
+        )
+        {
+            var innerAsText = reader.GetString();
+            var inner = (global::System.Int16)global::System.Convert.ChangeType(
+                innerAsText,
+                typeof(global::System.Int16),
+                global::System.Globalization.CultureInfo.InvariantCulture
+            )!;
+            return factory.Wrap(inner);
+        }
+
+        public override void WriteAsPropertyName(
+            global::System.Text.Json.Utf8JsonWriter writer,
+            [global::System.Diagnostics.CodeAnalysis.DisallowNull] TBranded value,
+            global::System.Text.Json.JsonSerializerOptions options
+        )
+        {
+            var inner = factory.Unwrap(value);
+            var innerAsText = (string)global::System.Convert.ChangeType(inner, typeof(string), global::System.Globalization.CultureInfo.InvariantCulture);
+            writer.WritePropertyName(innerAsText);
         }
     }
 
@@ -208,6 +260,32 @@ namespace Branded.Integrations.System.Text.Json
         {
             writer.WriteNumberValue(factory.Unwrap(value));
         }
+
+        public override TBranded ReadAsPropertyName(
+            ref global::System.Text.Json.Utf8JsonReader reader,
+            global::System.Type typeToConvert,
+            global::System.Text.Json.JsonSerializerOptions options
+        )
+        {
+            var innerAsText = reader.GetString();
+            var inner = (global::System.Int32)global::System.Convert.ChangeType(
+                innerAsText,
+                typeof(global::System.Int32),
+                global::System.Globalization.CultureInfo.InvariantCulture
+            )!;
+            return factory.Wrap(inner);
+        }
+
+        public override void WriteAsPropertyName(
+            global::System.Text.Json.Utf8JsonWriter writer,
+            [global::System.Diagnostics.CodeAnalysis.DisallowNull] TBranded value,
+            global::System.Text.Json.JsonSerializerOptions options
+        )
+        {
+            var inner = factory.Unwrap(value);
+            var innerAsText = (string)global::System.Convert.ChangeType(inner, typeof(string), global::System.Globalization.CultureInfo.InvariantCulture);
+            writer.WritePropertyName(innerAsText);
+        }
     }
 
     internal sealed class Int64BrandedJsonConverter<TBranded, TFactory> : global::System.Text.Json.Serialization.JsonConverter<TBranded>
@@ -231,6 +309,32 @@ namespace Branded.Integrations.System.Text.Json
         )
         {
             writer.WriteNumberValue(factory.Unwrap(value));
+        }
+
+        public override TBranded ReadAsPropertyName(
+            ref global::System.Text.Json.Utf8JsonReader reader,
+            global::System.Type typeToConvert,
+            global::System.Text.Json.JsonSerializerOptions options
+        )
+        {
+            var innerAsText = reader.GetString();
+            var inner = (global::System.Int64)global::System.Convert.ChangeType(
+                innerAsText,
+                typeof(global::System.Int64),
+                global::System.Globalization.CultureInfo.InvariantCulture
+            )!;
+            return factory.Wrap(inner);
+        }
+
+        public override void WriteAsPropertyName(
+            global::System.Text.Json.Utf8JsonWriter writer,
+            [global::System.Diagnostics.CodeAnalysis.DisallowNull] TBranded value,
+            global::System.Text.Json.JsonSerializerOptions options
+        )
+        {
+            var inner = factory.Unwrap(value);
+            var innerAsText = (string)global::System.Convert.ChangeType(inner, typeof(string), global::System.Globalization.CultureInfo.InvariantCulture);
+            writer.WritePropertyName(innerAsText);
         }
     }
 
@@ -256,6 +360,32 @@ namespace Branded.Integrations.System.Text.Json
         {
             writer.WriteNumberValue(factory.Unwrap(value));
         }
+
+        public override TBranded ReadAsPropertyName(
+            ref global::System.Text.Json.Utf8JsonReader reader,
+            global::System.Type typeToConvert,
+            global::System.Text.Json.JsonSerializerOptions options
+        )
+        {
+            var innerAsText = reader.GetString();
+            var inner = (global::System.UInt32)global::System.Convert.ChangeType(
+                innerAsText,
+                typeof(global::System.UInt32),
+                global::System.Globalization.CultureInfo.InvariantCulture
+            )!;
+            return factory.Wrap(inner);
+        }
+
+        public override void WriteAsPropertyName(
+            global::System.Text.Json.Utf8JsonWriter writer,
+            [global::System.Diagnostics.CodeAnalysis.DisallowNull] TBranded value,
+            global::System.Text.Json.JsonSerializerOptions options
+        )
+        {
+            var inner = factory.Unwrap(value);
+            var innerAsText = (string)global::System.Convert.ChangeType(inner, typeof(string), global::System.Globalization.CultureInfo.InvariantCulture);
+            writer.WritePropertyName(innerAsText);
+        }
     }
 
     internal sealed class UInt64BrandedJsonConverter<TBranded, TFactory> : global::System.Text.Json.Serialization.JsonConverter<TBranded>
@@ -280,6 +410,32 @@ namespace Branded.Integrations.System.Text.Json
         {
             writer.WriteNumberValue(factory.Unwrap(value));
         }
+
+        public override TBranded ReadAsPropertyName(
+            ref global::System.Text.Json.Utf8JsonReader reader,
+            global::System.Type typeToConvert,
+            global::System.Text.Json.JsonSerializerOptions options
+        )
+        {
+            var innerAsText = reader.GetString();
+            var inner = (global::System.UInt64)global::System.Convert.ChangeType(
+                innerAsText,
+                typeof(global::System.UInt64),
+                global::System.Globalization.CultureInfo.InvariantCulture
+            )!;
+            return factory.Wrap(inner);
+        }
+
+        public override void WriteAsPropertyName(
+            global::System.Text.Json.Utf8JsonWriter writer,
+            [global::System.Diagnostics.CodeAnalysis.DisallowNull] TBranded value,
+            global::System.Text.Json.JsonSerializerOptions options
+        )
+        {
+            var inner = factory.Unwrap(value);
+            var innerAsText = (string)global::System.Convert.ChangeType(inner, typeof(string), global::System.Globalization.CultureInfo.InvariantCulture);
+            writer.WritePropertyName(innerAsText);
+        }
     }
 
     internal sealed class StringBrandedJsonConverter<TBranded, TFactory> : global::System.Text.Json.Serialization.JsonConverter<TBranded>
@@ -303,6 +459,32 @@ namespace Branded.Integrations.System.Text.Json
         )
         {
             writer.WriteStringValue(factory.Unwrap(value));
+        }
+
+        public override TBranded ReadAsPropertyName(
+            ref global::System.Text.Json.Utf8JsonReader reader,
+            global::System.Type typeToConvert,
+            global::System.Text.Json.JsonSerializerOptions options
+        )
+        {
+            var innerAsText = reader.GetString();
+            var inner = (global::System.String)global::System.Convert.ChangeType(
+                innerAsText,
+                typeof(global::System.String),
+                global::System.Globalization.CultureInfo.InvariantCulture
+            )!;
+            return factory.Wrap(inner);
+        }
+
+        public override void WriteAsPropertyName(
+            global::System.Text.Json.Utf8JsonWriter writer,
+            [global::System.Diagnostics.CodeAnalysis.DisallowNull] TBranded value,
+            global::System.Text.Json.JsonSerializerOptions options
+        )
+        {
+            var inner = factory.Unwrap(value);
+            var innerAsText = (string)global::System.Convert.ChangeType(inner, typeof(string), global::System.Globalization.CultureInfo.InvariantCulture);
+            writer.WritePropertyName(innerAsText);
         }
     }
 

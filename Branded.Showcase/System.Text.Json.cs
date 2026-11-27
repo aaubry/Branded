@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+using System.Globalization;
 using System.Text.Json;
 
 namespace Branded.Showcase.System.Text.Json;
@@ -33,11 +34,19 @@ public static class Program
 {
     public static void Main()
     {
-
         var json = JsonSerializer.Serialize(new Widget(new(42), new("alex")));
         Console.WriteLine($"json: {json}");
 
         var parsed = JsonSerializer.Deserialize<Widget>(json);
         Console.WriteLine($"parsed: {parsed}");
+
+        var jsonDict = JsonSerializer.Serialize(new Dictionary<WidgetIdentifier, UserIdentifier>
+        {
+            {  new(42), new("alex") }
+        });
+        Console.WriteLine($"jsonDict: {jsonDict}");
+
+        var parsedDict = JsonSerializer.Deserialize<Dictionary<WidgetIdentifier, UserIdentifier>>(jsonDict);
+        Console.WriteLine($"parsedDict: {string.Join("; ", parsedDict!.Select(x => $"{x.Key} = {x.Value}"))}");
     }
 }
